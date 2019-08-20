@@ -21,7 +21,8 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         }
 
         [Route("add/{id}/{title}/{briefDescription}/{length}/{year}/{classification}")]
-        public ActionResult<Film> Get(int id, string title, string briefDescription, string length, string year, string classification)
+        [HttpPut]
+        public ActionResult<bool> Add(int id, string title, string briefDescription, string length, string year, string classification)
         {
             Film filmToAdd = new Film
             {
@@ -34,6 +35,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             };
 
             FilmContext db = new FilmContext(null);
+            return true;
         }
 
         [Route("getall")]
