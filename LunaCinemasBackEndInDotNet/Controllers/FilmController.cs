@@ -6,13 +6,23 @@ using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FilmController : Controller
     {
+        [Route("check")]
+        [HttpGet]
+        public ActionResult<string> Check()
+        {
+            FilmContext filmContext = new FilmContext();
+            return filmContext.checkDb();
+        }
+
         // GET: Film
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -34,7 +44,6 @@ namespace LunaCinemasBackEndInDotNet.Controllers
                 Classification = classification
             };
 
-            FilmContext db = new FilmContext(null);
             return true;
         }
 
