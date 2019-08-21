@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -15,28 +17,21 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class FilmController : Controller
     {
-        [Route("check")]
-        [HttpGet]
-        public ActionResult<string> Check()
-        {
-            FilmContext filmContext = new FilmContext();
-            return filmContext.checkDb();
-        }
+        private readonly FilmGrabber _businessWare = new FilmGrabber();
 
         [Route("getallfilms")]
         [HttpGet]
-        public ActionResult<string> GetAllFilms()
+        public ActionResult<ResponseObject<Film>> GetAllFilms()
         {
-            //todo
-            return "you got all the films";
+            return _businessWare.GetAll();
         }
 
-        [Route("searchfilms")]
+        [Route("searchfilms/{searchText}")]
         [HttpGet]
-        public ActionResult<string> SearchFilms()
+        public ActionResult<ResponseObject<Film>> SearchFilms(string searchText)
         {
             //todo
-            return "you searched for some films";
+            return _businessWare.Search(searchText);
         }
 
         [Route("getfilm/{id}")]
@@ -61,6 +56,14 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         {
             //todo
             return "you got all the new films";
+        }
+
+        [Route("check")]
+        [HttpGet]
+        public ActionResult<string> Check()
+        {
+            FilmContext filmContext = new FilmContext();
+            return filmContext.checkDb();
         }
 
     }
