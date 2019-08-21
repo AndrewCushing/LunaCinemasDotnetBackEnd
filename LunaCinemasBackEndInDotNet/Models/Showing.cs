@@ -2,6 +2,7 @@
 {
     public class Showing
     {
+        public string Id { get; set; }
         public string FilmId { get; set; }
         public string ShowingTime { get; set; }
         public string Date { get; set; }
