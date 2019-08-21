@@ -23,36 +23,45 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             return filmContext.checkDb();
         }
 
-        // GET: Film
+        [Route("getallfilms")]
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new [] {"Put a film here", "Put another film here", "etc"};
-        }
-
-        [Route("add/{id}/{title}/{briefDescription}/{length}/{year}/{classification}")]
-        [HttpPut]
-        public ActionResult<bool> Add(int id, string title, string briefDescription, string length, string year, string classification)
-        {
-            Film filmToAdd = new Film
-            {
-                Id = id,
-                Title = title,
-                BriefDescription = briefDescription,
-                Length = length,
-                Year = year,
-                Classification = classification
-            };
-
-            return true;
-        }
-
-        [Route("getall")]
-        public ActionResult<IEnumerable<Film>> GetAllFilms()
+        public ActionResult<string> GetAllFilms()
         {
             //todo
-            return null;
+            return "you got all the films";
         }
-        
+
+        [Route("searchfilms")]
+        [HttpGet]
+        public ActionResult<string> SearchFilms()
+        {
+            //todo
+            return "you searched for some films";
+        }
+
+        [Route("getfilm/{id}")]
+        [HttpGet]
+        public ActionResult<string> GetFilm(string id)
+        {
+            //todo
+            return $"you got the film with an id of {id}";
+        }
+
+        [Route("getupcomingfilms")]
+        [HttpGet]
+        public ActionResult<string> GetUpcomingFilms()
+        {
+            //todo
+            return $"you got all the upcoming films";
+        }
+
+        [Route("getnewfilms")]
+        [HttpGet]
+        public ActionResult<string> GetnewFilms()
+        {
+            //todo
+            return "you got all the new films";
+        }
+
     }
 }
