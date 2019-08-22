@@ -20,6 +20,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             successful = true;
             this.body = body;
             this.contentList = contentList;
+            return this;
         }
     }
 }

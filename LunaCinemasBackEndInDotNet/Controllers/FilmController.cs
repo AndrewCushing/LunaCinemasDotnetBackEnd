@@ -17,54 +17,58 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class FilmController : Controller
     {
-        private readonly FilmGrabber _businessWare = new FilmGrabber();
+        private readonly FilmGrabber _businessWare;
+
+        public FilmController(FilmGrabber _businessware)
+        {
+            _businessWare = _businessware;
+        }
 
         [Route("getallfilms")]
         [HttpGet]
-        public ActionResult<ResponseObject<Film>> GetAllFilms()
+        public ActionResult<List<Film>> GetAllFilms()
         {
-            return _businessWare.GetAll();
+            return _businessWare.Get();
         }
 
-        [Route("searchfilms/{searchText}")]
-        [HttpGet]
-        public ActionResult<ResponseObject<Film>> SearchFilms(string searchText)
-        {
-            //todo
-            return _businessWare.Search(searchText);
-        }
+        //[Route("searchfilms/{searchText}")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> SearchFilms(string searchText)
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-        [Route("getfilm/{id}")]
-        [HttpGet]
-        public ActionResult<string> GetFilm(string id)
-        {
-            //todo
-            return $"you got the film with an id of {id}";
-        }
+        //[Route("getfilm/{id}")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> GetFilm(string id)
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-        [Route("getupcomingfilms")]
-        [HttpGet]
-        public ActionResult<string> GetUpcomingFilms()
-        {
-            //todo
-            return $"you got all the upcoming films";
-        }
+        //[Route("getupcomingfilms")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> GetUpcomingFilms()
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-        [Route("getnewfilms")]
-        [HttpGet]
-        public ActionResult<string> GetnewFilms()
-        {
-            //todo
-            return "you got all the new films";
-        }
+        //[Route("getnewfilms")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> GetnewFilms()
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-        [Route("check")]
-        [HttpGet]
-        public ActionResult<string> Check()
-        {
-            FilmContext filmContext = new FilmContext();
-            return filmContext.checkDb();
-        }
+        //[Route("check")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> Check()
+        //{
+        //    return _businessWare.Get();
+        //}
 
     }
 }
