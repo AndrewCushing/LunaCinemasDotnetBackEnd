@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
-using LunaCinemasBackEndInDotNet.Persistence;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
 {
@@ -24,51 +16,26 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             _businessWare = _businessware;
         }
 
-        [Route("getallfilms")]
+        [Route("getnewfilms")]
         [HttpGet]
-        public ActionResult<List<Film>> GetAllFilms()
+        public ActionResult<List<Film>> GetNewFilms()
         {
-            return _businessWare.Get();
+            return _businessWare.GetNew();
         }
 
-        //[Route("searchfilms/{searchText}")]
-        //[HttpGet]
-        //public ActionResult<ResponseObject<Film>> SearchFilms(string searchText)
-        //{
-        //    //todo
-        //    return _businessWare.Get();
-        //}
+        [Route("getupcomingfilms")]
+        [HttpGet]
+        public ActionResult<List<Film>> GetUpcomingFilms()
+        {
+            return _businessWare.GetUpcoming();
+        }
 
-        //[Route("getfilm/{id}")]
-        //[HttpGet]
-        //public ActionResult<ResponseObject<Film>> GetFilm(string id)
-        //{
-        //    //todo
-        //    return _businessWare.Get();
-        //}
-
-        //[Route("getupcomingfilms")]
-        //[HttpGet]
-        //public ActionResult<ResponseObject<Film>> GetUpcomingFilms()
-        //{
-        //    //todo
-        //    return _businessWare.Get();
-        //}
-
-        //[Route("getnewfilms")]
-        //[HttpGet]
-        //public ActionResult<ResponseObject<Film>> GetnewFilms()
-        //{
-        //    //todo
-        //    return _businessWare.Get();
-        //}
-
-        //[Route("check")]
-        //[HttpGet]
-        //public ActionResult<ResponseObject<Film>> Check()
-        //{
-        //    return _businessWare.Get();
-        //}
+        [Route("search/{searchQuery}")]
+        [HttpGet]
+        public ActionResult<List<Film>> SearchFilms([FromRoute] string searchQuery)
+        {
+            return _businessWare.SearchFilms(searchQuery);
+        }
 
     }
 }

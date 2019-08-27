@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace LunaCinemasBackEndInDotNet.Models
 {
-    public class Review
+    public class Review : IResponseEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
