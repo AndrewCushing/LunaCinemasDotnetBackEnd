@@ -1,7 +1,13 @@
-﻿namespace LunaCinemasBackEndInDotNet.Models
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace LunaCinemasBackEndInDotNet.Models
 {
     public class Showing
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string FilmId { get; set; }
         public string ShowingTime { get; set; }
         public string Date { get; set; }

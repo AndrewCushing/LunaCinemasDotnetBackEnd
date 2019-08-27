@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -15,44 +17,58 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class FilmController : Controller
     {
-        [Route("check")]
+        private readonly FilmGrabber _businessWare;
+
+        public FilmController(FilmGrabber _businessware)
+        {
+            _businessWare = _businessware;
+        }
+
+        [Route("getallfilms")]
         [HttpGet]
-        public ActionResult<string> Check()
+        public ActionResult<List<Film>> GetAllFilms()
         {
-            FilmContext filmContext = new FilmContext();
-            return filmContext.checkDb();
+            return _businessWare.Get();
         }
 
-        // GET: Film
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new [] {"Put a film here", "Put another film here", "etc"};
-        }
+        //[Route("searchfilms/{searchText}")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> SearchFilms(string searchText)
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-        [Route("add/{id}/{title}/{briefDescription}/{length}/{year}/{classification}")]
-        [HttpPut]
-        public ActionResult<bool> Add(int id, string title, string briefDescription, string length, string year, string classification)
-        {
-            Film filmToAdd = new Film
-            {
-                Id = id,
-                Title = title,
-                BriefDescription = briefDescription,
-                Length = length,
-                Year = year,
-                Classification = classification
-            };
+        //[Route("getfilm/{id}")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> GetFilm(string id)
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-            return true;
-        }
+        //[Route("getupcomingfilms")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> GetUpcomingFilms()
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
 
-        [Route("getall")]
-        public ActionResult<IEnumerable<Film>> GetAllFilms()
-        {
-            //todo
-            return null;
-        }
-        
+        //[Route("getnewfilms")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> GetnewFilms()
+        //{
+        //    //todo
+        //    return _businessWare.Get();
+        //}
+
+        //[Route("check")]
+        //[HttpGet]
+        //public ActionResult<ResponseObject<Film>> Check()
+        //{
+        //    return _businessWare.Get();
+        //}
+
     }
 }
