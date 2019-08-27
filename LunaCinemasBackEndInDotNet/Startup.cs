@@ -25,7 +25,7 @@ namespace LunaCinemasBackEndInDotNet
         }
 
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -44,6 +44,18 @@ namespace LunaCinemasBackEndInDotNet
 
             services.AddDbContext<CommentContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("CommentContext")));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000").AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +69,7 @@ namespace LunaCinemasBackEndInDotNet
             {
                 app.UseHsts();
             }
+            app.UseCors(MyAllowSpecificOrigins); 
 
             app.UseHttpsRedirection();
             app.UseMvc();

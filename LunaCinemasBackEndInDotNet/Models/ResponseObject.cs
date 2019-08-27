@@ -4,45 +4,28 @@ using LunaCinemasBackEndInDotNet.Models;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
-    public class ResponseObject<T> : IEnumerator where T : IResponseEntity
+    public class ResponseObject<T>
     {
-        private ResponseSuccessMarker successful;
-        private ResponseBody body;
-        private List<T> contentList;
-        private int index;
-
-        public object Current
-        {
-            get
-            {
-                switch (index)
-                {
-                    case 0:
-                        return successful;
-                    case 1:
-                        return body;
-                    default:
-                        return contentList[index - 2];
-                }
-            }
-        }
+        public bool successful { get; private set; }
+        public string body { get; private set; }
+        public List<T> contentList { get; private set; }
 
         public ResponseObject(bool successful, string body, List<T> contentList)
         {
-            this.successful = new ResponseSuccessMarker(successful);
-            this.body = new ResponseBody(body);
+            this.successful = successful;
+            this.body = body;
             SetBody(body);
             this.contentList = contentList;
         }
 
         private void SetBody(string body)
         {
-            this.body.Body = body;
+            this.body = body;
         }
 
         private void SetSuccess(bool successful)
         {
-            this.successful.Success = successful;
+            this.successful = successful;
         }
 
         public ResponseObject<T> SetPositive(string body, List<T> contentList)
@@ -68,24 +51,6 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
                 contentList.RemoveRange(2, contentList.Count);
             }
             contentList.AddRange(contentToInsert);
-        }
-
-        public bool MoveNext()
-        {
-            index++;
-            return index < contentList.Count;
-        }
-
-        public void Reset()
-        {
-            index = 0;
-        }
-
-        object IEnumerator.Current => Current;
-
-        public void Dispose()
-        {
-            
         }
     }
 }

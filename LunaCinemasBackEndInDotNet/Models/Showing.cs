@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace LunaCinemasBackEndInDotNet.Models
 {
-    public class Showing : IResponseEntity
+    public class Showing
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

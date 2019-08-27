@@ -18,11 +18,11 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _films = database.GetCollection<Film>(settings.FilmsCollectionName);
         }
 
-        public ActionResult<List<Film>> GetNew()
+        public ActionResult<ResponseObject<Film>> GetNew()
         {
             var data = _films.Find(film => film.IsReleased).ToList();
-            ResponseObject<Film> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
-            return data;
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
+            return res;
         }
 
         public ActionResult<List<Film>> GetUpcoming()

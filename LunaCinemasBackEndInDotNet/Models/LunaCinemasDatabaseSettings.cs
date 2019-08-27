@@ -2,7 +2,7 @@
 
 namespace LunaCinemasBackEndInDotNet.Models
 {
-    public class LunaCinemasDatabaseSettings : IResponseEntity, ILunaCinemasDatabaseSettings
+    public class LunaCinemasDatabaseSettings : ILunaCinemasDatabaseSettings
     {
         public string FilmsCollectionName { get; set; }
         public string ConnectionString { get; set; }

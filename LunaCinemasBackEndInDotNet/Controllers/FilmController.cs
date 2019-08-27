@@ -18,7 +18,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("getnewfilms")]
         [HttpGet]
-        public ActionResult<List<Film>> GetNewFilms()
+        public ActionResult<ResponseObject<Film>> GetNewFilms()
         {
             return _businessWare.GetNew();
         }
