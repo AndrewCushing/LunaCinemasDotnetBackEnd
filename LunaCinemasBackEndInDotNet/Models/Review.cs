@@ -9,9 +9,15 @@ namespace LunaCinemasBackEndInDotNet.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        [BsonElement("filmId")]
         public string FilmId { get; set; }
-        public string UserName { get; set; }
+        [BsonElement("username")]
+        public string Username { get; set; }
+        [BsonElement("rating")]
         public string Rating { get; set; }
+        [BsonElement("review")]
         public string ReviewBody { get; set; }
+        [BsonElement("_class")]
+        public string JavaClass { get; set; }
     }
 }

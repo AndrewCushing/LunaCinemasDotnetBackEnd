@@ -9,34 +9,50 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class FilmGrabber
     {
-        private readonly IMongoCollection<Film> _films;
+        private IMongoCollection<Film> _films;
+        private readonly ILunaCinemasDatabaseSettings _settings;
 
         public FilmGrabber(ILunaCinemasDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-            _films = database.GetCollection<Film>(settings.FilmsCollectionName);
+            _settings = settings;
+            UpdateFilms();
+        }
+
+        private void UpdateFilms()
+        {
+            var client = new MongoClient(_settings.ConnectionString);
+            var database = client.GetDatabase(_settings.DatabaseName);
+            _films = database.GetCollection<Film>(_settings.FilmsCollectionName);
         }
 
         public ActionResult<ResponseObject<Film>> GetNew()
         {
+            UpdateFilms();
             var data = _films.Find(film => film.IsReleased).ToList();
             ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
             return res;
         }
 
-        public ActionResult<List<Film>> GetUpcoming()
+        public ActionResult<ResponseObject<Film>> GetUpcoming()
         {
+            UpdateFilms();
             var data = _films.Find(film => !film.IsReleased).ToList();
-            return data;
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
+            return res;
         }
             
 
-        public Film GetById(string id) =>
-            _films.Find<Film>(film => film.Id == id).FirstOrDefault();
+        public ActionResult<ResponseObject<Film>> GetById(string id)
+        {
+            UpdateFilms();
+            var data = _films.Find(film => film.Id.Equals(id)).ToList();
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
+            return res;
+        }
 
         public ActionResult<List<Film>> SearchFilms(string searchQuery)
         {
+            UpdateFilms();
             var data = _films.Find(film => SearchThisFilm(film, searchQuery)).ToList();
             return data;
         }

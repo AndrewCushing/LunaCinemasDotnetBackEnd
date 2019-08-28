@@ -23,9 +23,16 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             return _businessWare.GetNew();
         }
 
+        [Route("getfilm/{id}")]
+        [HttpGet("id")]
+        public ActionResult<ResponseObject<Film>> GetNewFilms(string id)
+        {
+            return _businessWare.GetById(id);
+        }
+
         [Route("getupcomingfilms")]
         [HttpGet]
-        public ActionResult<List<Film>> GetUpcomingFilms()
+        public ActionResult<ResponseObject<Film>> GetUpcomingFilms()
         {
             return _businessWare.GetUpcoming();
         }
