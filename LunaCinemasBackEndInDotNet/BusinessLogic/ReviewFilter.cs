@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
-    public class ReviewFilter
+    public class ReviewFilter : ContentFilter
     {
         private readonly ILunaCinemasDatabaseSettings _settings;
         private IMongoDatabase _database;
