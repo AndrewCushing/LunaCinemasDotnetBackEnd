@@ -31,5 +31,12 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             res.contentList.AddRange(commentsList);
             return res;
         }
+
+        public ActionResult<ResponseObject<Object>> AddComment(string reviewId, string username, string commentBody)
+        {
+            IMongoCollection<Comment> comments = _database.GetCollection<Comment>(_settings.CommentsCollectionName);
+            comments.InsertOne(new Comment(reviewId, username, commentBody));
+            return GetComments(reviewId);
+        }
     }
 }

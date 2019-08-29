@@ -28,5 +28,12 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         {
             return _businessware.GetComments(reviewId);
         }
+
+        [Route("addcomment/{reviewId}/{username}/{body}")]
+        [HttpPost("addcomment/{reviewId}/{username}/{body}")]
+        public ActionResult<ResponseObject<Object>> AddComment(string reviewId, string username, string body)
+        {
+            return _businessware.AddComment(reviewId, username, body);
+        }
     }
 }
