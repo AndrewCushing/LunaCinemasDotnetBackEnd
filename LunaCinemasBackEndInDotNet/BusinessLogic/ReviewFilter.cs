@@ -45,9 +45,9 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             UpdateReviews();
             Review reviewToInsert = new Review();
             reviewToInsert.FilmId = filmId;
-            reviewToInsert.Username = username;
+            reviewToInsert.Username = filterStuff(username);
             reviewToInsert.Rating = rating;
-            reviewToInsert.ReviewBody = reviewBody;
+            reviewToInsert.ReviewBody = filterStuff(reviewBody);
             _reviews.InsertOne(reviewToInsert);
             return GetByFilmId(filmId);
         }

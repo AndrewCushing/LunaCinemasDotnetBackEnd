@@ -35,7 +35,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         public ActionResult<ResponseObject<Object>> AddComment(string reviewId, string username, string commentBody)
         {
             IMongoCollection<Comment> comments = _database.GetCollection<Comment>(_settings.CommentsCollectionName);
-            comments.InsertOne(new Comment(reviewId, username, commentBody));
+            comments.InsertOne(new Comment(reviewId, filterStuff(username), filterStuff(commentBody)));
             return GetComments(reviewId);
         }
     }
