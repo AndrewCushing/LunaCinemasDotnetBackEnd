@@ -40,6 +40,7 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<FilmGrabber>();
             services.AddSingleton<ReviewFilter>();
             services.AddSingleton<CommentFilter>();
+            services.AddSingleton<ShowingHandler>();
 
             services.AddDbContext<ReviewContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ReviewContext")));

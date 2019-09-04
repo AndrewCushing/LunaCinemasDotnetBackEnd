@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +15,18 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             _settings = settings;
             UpdateFilms();
+        }
+
+        public Film GrabFilmObject(string filmId)
+        {
+            UpdateFilms();
+            var data = _films.Find(film => film.Id.Equals(filmId)).ToList();
+            if (data.Count < 1)
+            {
+                return null;
+            }
+
+            return data[0];
         }
 
         private void UpdateFilms()

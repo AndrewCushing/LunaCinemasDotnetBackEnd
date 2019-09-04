@@ -9,6 +9,7 @@ namespace LunaCinemasBackEndInDotNet.Models
         public string FilmsCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
+        public string ShowingsCollectionName { get; set; }
     }
 
     public interface ILunaCinemasDatabaseSettings
@@ -16,6 +17,7 @@ namespace LunaCinemasBackEndInDotNet.Models
         string CommentsCollectionName { get; set; }
         string ReviewsCollectionName { get; set; }
         string FilmsCollectionName { get; set; }
+        string ShowingsCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }
