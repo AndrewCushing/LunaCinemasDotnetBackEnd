@@ -41,6 +41,7 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<ReviewFilter>();
             services.AddSingleton<CommentFilter>();
             services.AddSingleton<ShowingHandler>();
+            services.AddSingleton<BookingHandler>();
 
             services.AddDbContext<ReviewContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ReviewContext")));
