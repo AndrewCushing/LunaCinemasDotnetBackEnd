@@ -93,20 +93,6 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return result;
         }
 
-        private BsonDocument createShowingReplacement(Showing oldShowing, bool[][] newSeatAvailability)
-        {
-            BsonDocument result = new BsonDocument();
-            result.Add("SeatAvailability", new BsonArray(newSeatAvailability));
-            result.Add("Date", oldShowing.Date);
-            result.Add("filmId", oldShowing.FilmId);
-            result.Add("_class", oldShowing.JavaClass);
-            result.Add("pricePerSeat", oldShowing.PricePerSeat);
-            result.Add("screenType", oldShowing.ScreenType);
-            result.Add("showingTime", oldShowing.ShowingTime);
-            result.Add("totalNumberOfSeats", oldShowing.TotalNumberOfSeats);
-            return result;
-        }
-
         private Showing copyShowing(Showing oldShowing, string[] seatsToBook)
         {
             Showing result = new Showing();

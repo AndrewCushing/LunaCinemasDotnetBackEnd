@@ -40,7 +40,15 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             UpdateFilms();
             var data = _films.Find(film => film.IsReleased).ToList();
-            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
+            ActionResult<ResponseObject<Film>> res;
+            if (data.Count > 0)
+            {
+                res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedNewFilms, new List<Film>(data));
+            }
+            else
+            {
+                res = new ResponseObject<Film>(true, ResponseText.UnableToRetrieveUpcomingFilms, null);
+            }
             return res;
         }
 
@@ -48,7 +56,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             UpdateFilms();
             var data = _films.Find(film => !film.IsReleased).ToList();
-            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedUpcomingFilms, new List<Film>(data));
             return res;
         }
             
