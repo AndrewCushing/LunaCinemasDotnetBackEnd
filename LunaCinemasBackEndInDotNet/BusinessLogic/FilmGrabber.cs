@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -38,26 +39,36 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Film>> GetNew()
         {
-            UpdateFilms();
-            var data = _films.Find(film => film.IsReleased).ToList();
             ActionResult<ResponseObject<Film>> res;
-            if (data.Count > 0)
+            try
             {
+                UpdateFilms();
+                var data = _films.Find(film => film.IsReleased).ToList();
                 res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedNewFilms, new List<Film>(data));
+                return res;
             }
-            else
+            catch (Exception)
             {
-                res = new ResponseObject<Film>(true, ResponseText.UnableToRetrieveUpcomingFilms, null);
+                res = new ResponseObject<Film>(false, ResponseText.UnableToRetrieveNewFilms, null);
+                return res;
             }
-            return res;
         }
 
         public ActionResult<ResponseObject<Film>> GetUpcoming()
         {
-            UpdateFilms();
-            var data = _films.Find(film => !film.IsReleased).ToList();
-            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedUpcomingFilms, new List<Film>(data));
-            return res;
+            ActionResult<ResponseObject<Film>> res;
+            try
+            {
+                UpdateFilms();
+                var data = _films.Find(film => !film.IsReleased).ToList();
+                res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedUpcomingFilms, new List<Film>(data));
+                return res;
+            }
+            catch (Exception)
+            {
+                res = new ResponseObject<Film>(false, ResponseText.UnableToRetrieveUpcomingFilms, null);
+                return res;
+            }
         }
             
 
@@ -69,19 +80,29 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return res;
         }
 
-        public ActionResult<List<Film>> SearchFilms(string searchQuery)
+        public ActionResult<ResponseObject<Film>> SearchFilms(string searchQuery)
         {
             UpdateFilms();
-            var data = _films.Find(film => SearchThisFilm(film, searchQuery)).ToList();
-            return data;
+            List<Film> data = _films.Find(film => true).ToList();
+            int j = data.Count;
+            for (int i = 0 ; i < j ; i++)
+            {
+                if (!SearchThisFilm(data[i], searchQuery))
+                {
+                    data.Remove(data[i]);
+                    j--;
+                    i--;
+                }
+            }
+            return new ResponseObject<Film>(true, $"Search complete. Found {data.Count} films", data);
         }
 
         private bool SearchThisFilm(Film film, string searchQuery)
         {
-            return film.Title.Contains(searchQuery) ||
-                   film.Genres.ToList().Find(genre => genre.Contains(searchQuery)).Length > 0 ||
-                   film.Actors.ToList().Find(actor => actor.Contains(searchQuery)).Length > 0 ||
-                   film.Directors.ToList().Find(director => director.Contains(searchQuery)).Length > 0;
+            return film.Title.ToLower().Contains(searchQuery.ToLower()) ||
+                   film.Genres.ToList().Find(genre => genre.ToLower().Contains(searchQuery.ToLower())) != null ||
+                   film.Actors.ToList().Find(actor => actor.ToLower().Contains(searchQuery.ToLower())) != null ||
+                   film.Directors.ToList().Find(director => director.ToLower().Contains(searchQuery.ToLower())) != null;
         }
     }
 }

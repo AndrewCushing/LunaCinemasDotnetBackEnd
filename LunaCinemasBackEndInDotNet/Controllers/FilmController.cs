@@ -25,7 +25,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("getfilm/{id}")]
         [HttpGet("id")]
-        public ActionResult<ResponseObject<Film>> GetNewFilms(string id)
+        public ActionResult<ResponseObject<Film>> GetFilm(string id)
         {
             return _businessWare.GetById(id);
         }
@@ -39,7 +39,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("search/{searchQuery}")]
         [HttpGet]
-        public ActionResult<List<Film>> SearchFilms([FromRoute] string searchQuery)
+        public ActionResult<ResponseObject<Film>> SearchFilms([FromRoute] string searchQuery)
         {
             return _businessWare.SearchFilms(searchQuery);
         }
