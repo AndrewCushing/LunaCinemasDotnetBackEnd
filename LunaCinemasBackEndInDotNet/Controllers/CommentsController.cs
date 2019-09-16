@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LunaCinemasBackEndInDotNet.BusinessLogic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LunaCinemasBackEndInDotNet.Models;
-using LunaCinemasBackEndInDotNet.Persistence;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
 {
@@ -24,14 +17,14 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("getcomments/{reviewId}")]
         [HttpGet("reviewId")]
-        public ActionResult<ResponseObject<Object>> GetComments(string reviewId)
+        public ActionResult<ResponseObject<object>> GetComments(string reviewId)
         {
             return _businessware.GetComments(reviewId);
         }
 
         [Route("addcomment/{reviewId}/{username}/{body}")]
         [HttpPost("addcomment/{reviewId}/{username}/{body}")]
-        public ActionResult<ResponseObject<Object>> AddComment(string reviewId, string username, string body)
+        public ActionResult<ResponseObject<object>> AddComment(string reviewId, string username, string body)
         {
             return _businessware.AddComment(reviewId, username, body);
         }

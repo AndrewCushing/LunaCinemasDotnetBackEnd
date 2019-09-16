@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
+using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class ShowingHandler
     {
+        private readonly IShowingContext _dbContext;
         private readonly ILunaCinemasDatabaseSettings _settings;
-        private IMongoDatabase _database;
 
-        public ShowingHandler(ILunaCinemasDatabaseSettings settings)
+        public ShowingHandler(IShowingContext dbContext, ILunaCinemasDatabaseSettings settings)
         {
+            _dbContext = dbContext;
             _settings = settings;
-            var client = new MongoClient(_settings.ConnectionString);
-            _database = client.GetDatabase(_settings.DatabaseName);
         }
         
         public ActionResult<ResponseObject<object>> GetShowingsByFilmId(string filmId)
         {
-            IMongoCollection<Showing> showingsCollection = _database.GetCollection<Showing>(_settings.ShowingsCollectionName);
-            List<Showing> showingsForThisFilm =
-                showingsCollection.Find(showing => showing.FilmId.Equals(filmId)).ToList();
+            List<Showing> showingsForThisFilm = _dbContext.GetByFilmId(filmId);
             FilmGrabber filmGrabber = new FilmGrabber(_settings);
             Film filmObject = filmGrabber.GrabFilmObject(filmId);
             if (showingsForThisFilm.Count > 0)
@@ -40,7 +35,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Showing>> GetShowingById(string id)
         {
-            Showing showingToReturn = getShowing(id);
+            Showing showingToReturn = _dbContext.GetById(id);
             List<Showing> showingAsList = new List<Showing>();
             showingAsList.Add(showingToReturn);
             return showingToReturn != null ? 
@@ -50,7 +45,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Showing>> AttemptBooking(string showingId, string[] seatsToBook)
         {
-            Showing showing = getShowing(showingId);
+            Showing showing = _dbContext.GetById(showingId);
             foreach (string seat in seatsToBook)
             {
                 int[] coords = getSeatCoordsAsInts(seat);
@@ -61,17 +56,11 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
                     return new ResponseObject<Showing>(false,"Unable to proceed with booking. Some of those seats have already been booked.", showingAsList);
                 }
             }
-            IMongoCollection<Showing> showingsCollection = _database.GetCollection<Showing>(_settings.ShowingsCollectionName);
-            FilterDefinition<Showing> filterDefinition = new BsonDocumentFilterDefinition<Showing>(showing.ToBsonDocument());
-            Showing newShowing = copyShowing(showing, seatsToBook);
-            showingsCollection.ReplaceOne(filterDefinition, newShowing);
-            return new ResponseObject<Showing>(true, "Your seats have been booked",null);
-        }
-
-        private Showing getShowing(string id)
-        {
-            IMongoCollection<Showing> showings = _database.GetCollection<Showing>(_settings.ShowingsCollectionName);
-            return showings.Find(showing => showing.Id.Equals(id)).ToList()[0];
+            Showing newShowing = createShowingWithSeatsToBook(showing, seatsToBook);
+            bool success = _dbContext.UpdateShowing(showing, newShowing);
+            return success
+                ? new ResponseObject<Showing>(true, "Your seats have been booked", null)
+                : new ResponseObject<Showing>(false, "Unable to book seats due to a problem with the database connection. Please try again later", null);
         }
 
         private bool[][] getNewSeatAvailability(bool[][] seatAvailability, string[] seatsToBook)
@@ -93,7 +82,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return result;
         }
 
-        private Showing copyShowing(Showing oldShowing, string[] seatsToBook)
+        private Showing createShowingWithSeatsToBook(Showing oldShowing, string[] seatsToBook)
         {
             Showing result = new Showing();
             result.Id = oldShowing.Id;

@@ -18,14 +18,14 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("getreviews/{id}")]
         [HttpGet("id")]
-        public ActionResult<ResponseObject<Object>> GetReviewsByFilmId(string id)
+        public ActionResult<ResponseObject<object>> GetReviewsByFilmId(string id)
         {
             return _businessware.GetByFilmId(id);
         }
 
         [Route("addreview/{filmid}/{username}/{rating}/{reviewBody}")]
         [HttpPost("addreview/{filmid}/{username}/{rating}/{reviewBody}")]
-        public ActionResult<ResponseObject<Object>> AddReview(string filmid, string username, string rating, string reviewBody)
+        public ActionResult<ResponseObject<object>> SubmitReview(string filmid, string username, string rating, string reviewBody)
         {
             return _businessware.AddReview(filmid, username, rating, reviewBody);
         }
