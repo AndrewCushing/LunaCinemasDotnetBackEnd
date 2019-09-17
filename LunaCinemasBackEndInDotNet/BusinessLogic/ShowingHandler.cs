@@ -8,28 +8,25 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
     public class ShowingHandler
     {
         private readonly IShowingContext _dbContext;
-        private readonly ILunaCinemasDatabaseSettings _settings;
+        private readonly IFilmContext _filmContext;
 
-        public ShowingHandler(IShowingContext dbContext, ILunaCinemasDatabaseSettings settings)
+        public ShowingHandler(IShowingContext dbContext, IFilmContext filmContext)
         {
             _dbContext = dbContext;
-            _settings = settings;
+            _filmContext = filmContext;
         }
         
         public ActionResult<ResponseObject<object>> GetShowingsByFilmId(string filmId)
         {
             List<Showing> showingsForThisFilm = _dbContext.GetByFilmId(filmId);
-            FilmGrabber filmGrabber = new FilmGrabber(_settings);
-            Film filmObject = filmGrabber.GrabFilmObject(filmId);
+            List<Film> filmAsList = _filmContext.FindById(filmId);
             if (showingsForThisFilm.Count > 0)
             {
-                ResponseObject<object> positiveResponse = new ResponseObject<object>(true,$"Retrieved {showingsForThisFilm.Count} showings for that filmId", new List<object>());
-                positiveResponse.contentList.Add(filmObject);
+                ResponseObject<object> positiveResponse = new ResponseObject<object>(true,$"Retrieved {showingsForThisFilm.Count} showings for that filmId", new List<object>(filmAsList));
                 positiveResponse.contentList.AddRange(showingsForThisFilm);
                 return positiveResponse;
             }
-            ResponseObject<object> negativeResponse = new ResponseObject<object>(false,"No showings found for that film", new List<object>());
-            negativeResponse.contentList.Add(filmObject);
+            ResponseObject<object> negativeResponse = new ResponseObject<object>(false,"No showings found for that film", new List<object>(filmAsList));
             return negativeResponse;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
+using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
@@ -8,24 +9,22 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class CommentFilter : ContentFilter
     {
-        private readonly ILunaCinemasDatabaseSettings _settings;
-        private IMongoDatabase _database;
+        private readonly ICommentContext _commentContext;
+        private readonly IReviewContext _reviewContext;
+        private readonly IFilmContext _filmContext;
 
-        public CommentFilter(ILunaCinemasDatabaseSettings settings)
+        public CommentFilter(ICommentContext commentContext, IReviewContext reviewContext, IFilmContext filmContext)
         {
-            _settings = settings;
-            var client = new MongoClient(_settings.ConnectionString);
-            _database = client.GetDatabase(_settings.DatabaseName);
+            _commentContext = commentContext;
+            _reviewContext = reviewContext;
+            _filmContext = filmContext;
         }
         public ActionResult<ResponseObject<object>> GetComments(string reviewId)
         {
-            IMongoCollection<Review> reviews = _database.GetCollection<Review>(_settings.ReviewsCollectionName);
-            Review review = reviews.Find(reviewDoc => reviewDoc.Id.Equals(reviewId)).ToList()[0];
-            IMongoCollection<Film> films = _database.GetCollection<Film>(_settings.FilmsCollectionName);
-            Film film = films.Find(filmDoc => filmDoc.Id.Equals(review.FilmId)).ToList()[0];
-            IMongoCollection<Comment> commentsCollection = _database.GetCollection<Comment>(_settings.CommentsCollectionName);
-            List<Comment> commentsList = commentsCollection.Find(comment => true).ToList();
-            ResponseObject<Object> res = new ResponseObject<object>(true, $"Retrieved {commentsList.Count} comments for that review.", new List<object>());
+            Review review = _reviewContext.FindById(reviewId)[0];
+            Film film = _filmContext.FindById(review.FilmId)[0];
+            List<Comment> commentsList = _commentContext.FindByReviewId(reviewId);
+            ResponseObject<object> res = new ResponseObject<object>(true, $"Retrieved {commentsList.Count} comments for that review.", new List<object>());
             res.contentList.Add(film);
             res.contentList.Add(review);
             res.contentList.AddRange(commentsList);
@@ -34,8 +33,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Object>> AddComment(string reviewId, string username, string commentBody)
         {
-            IMongoCollection<Comment> comments = _database.GetCollection<Comment>(_settings.CommentsCollectionName);
-            comments.InsertOne(new Comment(reviewId, filterStuff(username), filterStuff(commentBody)));
+            _commentContext.AddComment(new Comment(reviewId, filterStuff(username), filterStuff(commentBody)));
             return GetComments(reviewId);
         }
     }

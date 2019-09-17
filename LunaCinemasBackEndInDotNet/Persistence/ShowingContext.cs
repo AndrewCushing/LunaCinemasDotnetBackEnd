@@ -34,7 +34,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public Showing GetById(string id)
         {
             IMongoCollection<Showing> showingsCollection = _database.GetCollection<Showing>(_settings.ShowingsCollectionName);
-            List<Showing> resultFromDb = showingsCollection.Find(showing => showing.FilmId.Equals(id)).ToList();
+            List<Showing> resultFromDb = showingsCollection.Find(showing => showing.Id.Equals(id)).ToList();
             return resultFromDb.Count > 0 ? resultFromDb[0] : null;
         }
 

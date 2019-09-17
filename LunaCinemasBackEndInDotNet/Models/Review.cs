@@ -19,5 +19,15 @@ namespace LunaCinemasBackEndInDotNet.Models
         public string ReviewBody { get; set; }
         [BsonElement("_class")]
         public string JavaClass { get; set; }
+
+        public Review(string filmId, string username, string rating, string reviewBody)
+        {
+            FilmId = filmId;
+            Username = username;
+            Rating = rating;
+            ReviewBody = reviewBody;
+        }
+        
+        public Review (){ }
     }
 }

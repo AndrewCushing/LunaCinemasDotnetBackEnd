@@ -2,39 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using LunaCinemasBackEndInDotNet.Models;
+using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class FilmGrabber
     {
-        private IMongoCollection<Film> _films;
-        private readonly ILunaCinemasDatabaseSettings _settings;
+        private readonly IFilmContext _filmContext;
 
-        public FilmGrabber(ILunaCinemasDatabaseSettings settings)
+        public FilmGrabber(IFilmContext filmContext)
         {
-            _settings = settings;
-            UpdateFilms();
-        }
-
-        public Film GrabFilmObject(string filmId)
-        {
-            UpdateFilms();
-            var data = _films.Find(film => film.Id.Equals(filmId)).ToList();
-            if (data.Count < 1)
-            {
-                return null;
-            }
-
-            return data[0];
-        }
-
-        private void UpdateFilms()
-        {
-            var client = new MongoClient(_settings.ConnectionString);
-            var database = client.GetDatabase(_settings.DatabaseName);
-            _films = database.GetCollection<Film>(_settings.FilmsCollectionName);
+            _filmContext = filmContext;
         }
 
         public ActionResult<ResponseObject<Film>> GetNew()
@@ -42,9 +21,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             ActionResult<ResponseObject<Film>> res;
             try
             {
-                UpdateFilms();
-                var data = _films.Find(film => film.IsReleased).ToList();
-                res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedNewFilms, new List<Film>(data));
+                res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedNewFilms, new List<Film>(_filmContext.GetReleasedFilms()));
                 return res;
             }
             catch (Exception)
@@ -59,8 +36,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             ActionResult<ResponseObject<Film>> res;
             try
             {
-                UpdateFilms();
-                var data = _films.Find(film => !film.IsReleased).ToList();
+                var data = _filmContext.GetUpcomingFilms();
                 res = new ResponseObject<Film>(true, ResponseText.SuccessfullyRetrievedUpcomingFilms, new List<Film>(data));
                 return res;
             }
@@ -74,16 +50,13 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Film>> GetById(string id)
         {
-            UpdateFilms();
-            var data = _films.Find(film => film.Id.Equals(id)).ToList();
-            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(data));
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(_filmContext.FindById(id)));
             return res;
         }
 
         public ActionResult<ResponseObject<Film>> SearchFilms(string searchQuery)
         {
-            UpdateFilms();
-            List<Film> data = _films.Find(film => true).ToList();
+            List<Film> data = _filmContext.GetAllFilms();
             int j = data.Count;
             for (int i = 0 ; i < j ; i++)
             {

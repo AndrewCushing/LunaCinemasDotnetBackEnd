@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace LunaCinemasBackEndInDotNet.Models
@@ -32,5 +33,42 @@ namespace LunaCinemasBackEndInDotNet.Models
         public string[] Actors { get; set; }
         [BsonElement("_class")]
         public string JavaClass { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                Film filmToCompareTo = (Film) obj;
+                return IsReleased == filmToCompareTo.IsReleased &&
+                       Title.Equals(filmToCompareTo.Title) &&
+                       Id.Equals(filmToCompareTo.Id) &&
+                       Length.Equals(filmToCompareTo.Length) &&
+                       BriefDescription.Equals(filmToCompareTo.BriefDescription) &&
+                       DetailedDescription.Equals(filmToCompareTo.DetailedDescription) &&
+                       ImagePath.Equals(filmToCompareTo.ImagePath) &&
+                       Year.Equals(filmToCompareTo.Year) &&
+                       Classification.Equals(filmToCompareTo.Classification) &&
+                       compareStringArr(Directors, filmToCompareTo.Directors) &&
+                       compareStringArr(Actors, filmToCompareTo.Actors) &&
+                       compareStringArr(Genres, filmToCompareTo.Genres);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private bool compareStringArr(string[] arr1, string[] arr2)
+        {
+            bool match = arr1.Length == arr2.Length;
+            if (match)
+            {
+                for (int i = 0 ; i < arr2.Length ; i++)
+                {
+                    match = match && arr1[i].Equals(arr2[i]);
+                }
+            }
+            return match;
+        }
     }
 }

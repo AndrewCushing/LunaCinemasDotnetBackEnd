@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
+using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
@@ -8,31 +9,20 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class ReviewFilter : ContentFilter
     {
-        private readonly ILunaCinemasDatabaseSettings _settings;
-        private IMongoDatabase _database;
-        private IMongoCollection<Review> _reviews;
+        private readonly IReviewContext _reviewContext;
+        private readonly IFilmContext _filmContext;
 
-        public ReviewFilter(ILunaCinemasDatabaseSettings settings)
+        public ReviewFilter(IReviewContext reviewContext, IFilmContext filmContext)
         {
-            _settings = settings;
-            var client = new MongoClient(_settings.ConnectionString);
-            _database = client.GetDatabase(_settings.DatabaseName);
-        }
-        private void UpdateReviews()
-        {
-            var client = new MongoClient(_settings.ConnectionString);
-            _database = client.GetDatabase(_settings.DatabaseName);
-            _reviews = _database.GetCollection<Review>(_settings.ReviewsCollectionName);
+            _reviewContext = reviewContext;
+            _filmContext = filmContext;
         }
 
-        public ActionResult<ResponseObject<Object>> GetByFilmId(string id)
+        public ActionResult<ResponseObject<object>> GetByFilmId(string id)
         {
-            UpdateReviews();
-            Film film = _database.GetCollection<Film>(_settings.FilmsCollectionName).Find(filmDoc => filmDoc.Id.Equals(id))
-                .ToList()[0];
-            List<Review> reviews = _reviews.Find(review => review.FilmId.Equals(id)).ToList();
-            ResponseObject<Object> res = new ResponseObject<object>(true, $"Retrieved film data and reviews as a list. There was {reviews.Count} reviews for that film",new List<Object>());
-            res.contentList.Add(film);
+            List<Film> film = _filmContext.FindById(id);
+            List<Review> reviews = _reviewContext.FindByFilmId(id);
+            ResponseObject<object> res = new ResponseObject<object>(true, $"Retrieved film data and reviews as a list. There was {reviews.Count} reviews for that film", new List<object>(film));
             if (reviews.Count > 0)
             {
                 res.contentList.AddRange(reviews);
@@ -40,15 +30,9 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return res;
         }
 
-        public ActionResult<ResponseObject<Object>> AddReview(string filmId, string username, string rating, string reviewBody)
+        public ActionResult<ResponseObject<object>> AddReview(string filmId, string username, string rating, string reviewBody)
         {
-            UpdateReviews();
-            Review reviewToInsert = new Review();
-            reviewToInsert.FilmId = filmId;
-            reviewToInsert.Username = filterStuff(username);
-            reviewToInsert.Rating = rating;
-            reviewToInsert.ReviewBody = filterStuff(reviewBody);
-            _reviews.InsertOne(reviewToInsert);
+            _reviewContext.AddReview(new Review(filmId, username, rating, reviewBody));
             return GetByFilmId(filmId);
         }
     }

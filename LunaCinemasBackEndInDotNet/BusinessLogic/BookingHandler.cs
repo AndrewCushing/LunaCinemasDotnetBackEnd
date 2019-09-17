@@ -6,15 +6,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class BookingHandler
     {
-        private readonly ILunaCinemasDatabaseSettings _settings;
-        private IMongoDatabase _database;
         private ShowingHandler _showingHandler;
 
-        public BookingHandler(ILunaCinemasDatabaseSettings settings, ShowingHandler showingHandler)
+        public BookingHandler(ShowingHandler showingHandler)
         {
-            _settings = settings;
-            var client = new MongoClient(_settings.ConnectionString);
-            _database = client.GetDatabase(_settings.DatabaseName);
             _showingHandler = showingHandler;
         }
 
