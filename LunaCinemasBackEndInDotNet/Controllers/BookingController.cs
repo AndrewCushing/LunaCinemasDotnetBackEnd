@@ -18,8 +18,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("booktickets/{showingId}")]
         [HttpPost("showingId")]
-        public ActionResult<ResponseObject<Showing>> BookTickets(string showingId,
-            [FromBody] string[] seatsToBook)
+        public ActionResult<ResponseObject<Showing>> BookTickets(string showingId, [FromBody] string[] seatsToBook)
         {
             return _businessware.BookTickets(showingId, seatsToBook);
         }

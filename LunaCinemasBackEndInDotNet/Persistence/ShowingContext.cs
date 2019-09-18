@@ -43,7 +43,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
             try
             {
                 _database.GetCollection<Showing>(_settings.ShowingsCollectionName)
-                    .ReplaceOne(new BsonDocumentFilterDefinition<Showing>(oldShowing.ToBsonDocument()), newShowing);
+                    .ReplaceOne(showing => showing.Id.Equals(oldShowing.Id), newShowing);
                 return true;
             }
             catch (Exception)

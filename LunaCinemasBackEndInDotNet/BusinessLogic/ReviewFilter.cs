@@ -32,7 +32,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             }
             catch (Exception)
             {
-                return null;
+                return new ResponseObject<object>(false, $"That film ID doesn't match any films in the database", null);
             }
         }
 

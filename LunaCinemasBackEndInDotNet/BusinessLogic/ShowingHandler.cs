@@ -26,18 +26,8 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
                 positiveResponse.contentList.AddRange(showingsForThisFilm);
                 return positiveResponse;
             }
-            ResponseObject<object> negativeResponse = new ResponseObject<object>(false,"No showings found for that film", new List<object>(filmAsList));
+            ResponseObject<object> negativeResponse = new ResponseObject<object>(false,ResponseText.NoShowingsForThatFilm, new List<object>(filmAsList));
             return negativeResponse;
-        }
-
-        public ActionResult<ResponseObject<Showing>> GetShowingById(string id)
-        {
-            Showing showingToReturn = _dbContext.GetById(id);
-            List<Showing> showingAsList = new List<Showing>();
-            showingAsList.Add(showingToReturn);
-            return showingToReturn != null ? 
-                new ResponseObject<Showing>(true, "Showing retrieved", showingAsList) : 
-                new ResponseObject<Showing>(false,"No showing found with that Id",null);
         }
 
         public ActionResult<ResponseObject<Showing>> AttemptBooking(string showingId, string[] seatsToBook)

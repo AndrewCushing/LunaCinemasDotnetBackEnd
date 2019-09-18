@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
@@ -31,7 +29,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return res;
         }
 
-        public ActionResult<ResponseObject<Object>> AddComment(string reviewId, string username, string commentBody)
+        public ActionResult<ResponseObject<object>> AddComment(string reviewId, string username, string commentBody)
         {
             _commentContext.AddComment(new Comment(reviewId, filterStuff(username), filterStuff(commentBody)));
             return GetComments(reviewId);

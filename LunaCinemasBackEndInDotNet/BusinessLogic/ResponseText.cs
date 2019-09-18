@@ -13,5 +13,7 @@
             "Unable to retrieve upcoming films. Please check your connection and try again.";
 
         public static readonly string ReviewSubmittedWordsWereCensored = "Review submitted successfully. Words were censored.";
+
+        public static readonly string NoShowingsForThatFilm = "No showings found for that film";
     }
 }

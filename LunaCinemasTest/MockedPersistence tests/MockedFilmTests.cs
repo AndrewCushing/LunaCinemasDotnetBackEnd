@@ -22,16 +22,6 @@ namespace LunaCinemasTest
             _testFilmController = new FilmController(new FilmGrabber(_mockFilmContext));
         }
 
-        private ILunaCinemasDatabaseSettings getIncorrectDatabaseSettings()
-        {
-            return new LunaCinemasDatabaseSettings()
-            {
-                FilmsCollectionName = "film",
-                DatabaseName = "LunaCinemas",
-                ConnectionString = "mongodb://localhost:27027"
-            };
-        }
-
         [TestMethod]
         public void GetNewFilmsReturnsAllFilmsWhichAreReleased()
         {
@@ -114,10 +104,10 @@ namespace LunaCinemasTest
                 Year = "3d",
                 JavaClass = "222fdf222"
             });
-            _mockFilmContext.AddToGetReleasedFilmsResults(expectedResult);
-            ActionResult<ResponseObject<Film>> actualResult = _testFilmController.GetNewFilms();
+            _mockFilmContext.AddToGetUpcomingFilmsResults(expectedResult);
+            ActionResult<ResponseObject<Film>> actualResult = _testFilmController.GetUpcomingFilms();
             Assert.AreEqual(true, actualResult.Value.successful);
-            Assert.AreEqual(actualResult.Value.body, ResponseText.SuccessfullyRetrievedNewFilms);
+            Assert.AreEqual(actualResult.Value.body, ResponseText.SuccessfullyRetrievedUpcomingFilms);
             for (int i = 0; i < expectedResult.Count; i++)
             {
                 Assert.AreEqual(expectedResult[i],actualResult.Value.contentList[i]);
@@ -152,6 +142,22 @@ namespace LunaCinemasTest
             Assert.AreEqual(1, actualResult.Value.contentList.Count);
             Assert.AreEqual("Angel Has Fallen", actualResult.Value.contentList[0].Title);
             Assert.AreEqual("njkjn", actualResult.Value.contentList[0].Id);
+        }
+
+        [TestMethod]
+        public void AttemptingToRetrieveUpcomingFilmsWhenDbIsDownGivesAppropriateResponse()
+        {
+            _mockFilmContext.BreakPersistence();
+            ActionResult<ResponseObject<Film>> actualResponse = _testFilmController.GetUpcomingFilms();
+            Assert.IsFalse(actualResponse.Value.successful);
+        }
+
+        [TestMethod]
+        public void AttemptingToRetrieveNewFilmsWhenDbIsDownGivesAppropriateResponse()
+        {
+            _mockFilmContext.BreakPersistence();
+            ActionResult<ResponseObject<Film>> actualResponse = _testFilmController.GetNewFilms();
+            Assert.IsFalse(actualResponse.Value.successful);
         }
     }
 }

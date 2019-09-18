@@ -14,20 +14,21 @@ namespace LunaCinemasTest
     {
         private static MockFilmContext _filmContext;
         private static MockReviewContext _reviewContext;
+        private static ReviewsController _reviewsController;
 
         [TestInitialize]
         public void CreateMockContexts()
         {
             _filmContext = new MockFilmContext();
             _reviewContext = new MockReviewContext();
+            _reviewsController = new ReviewsController(new ReviewFilter(_reviewContext, _filmContext));
         }
         
         [TestMethod]
         public void ReviewsCanBeSubmitted()
         {
-            ReviewsController controller = new ReviewsController(new ReviewFilter(_reviewContext, _filmContext));
             _filmContext.AddFindByIdResult(new Film(){Id = "5d650036280b7e2dc0b0d121"});
-            ActionResult<ResponseObject<object>> actualResponse = controller.SubmitReview("5d650036280b7e2dc0b0d121", "Test user", "3",
+            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview("5d650036280b7e2dc0b0d121", "Test user", "3",
                 "This is a test review. Nothing to see here.");
             Assert.AreEqual(true, actualResponse.Value.successful);
             Assert.AreEqual(1, _reviewContext.FindByFilmId("5d650036280b7e2dc0b0d121").Count);
@@ -42,9 +43,8 @@ namespace LunaCinemasTest
             _reviewContext.AddReview(new Review(){FilmId = "1234", Username = "Bob", ReviewBody = "Best film ever!"});
             _reviewContext.AddReview(new Review(){FilmId = "1234", Username = "Sally", ReviewBody = "Legendary film"});
             _reviewContext.AddReview(new Review(){FilmId = "1234", Username = "Sarah", ReviewBody = "Awesome film"});
-            ReviewsController controller = new ReviewsController(new ReviewFilter(_reviewContext, _filmContext));
             ActionResult<ResponseObject<object>> actualResponse =
-                controller.GetReviewsByFilmId("1234");
+                _reviewsController.GetReviewsByFilmId("1234");
             Assert.IsTrue(actualResponse.Value.successful);
             Assert.IsNotNull(actualResponse.Value.contentList);
             Assert.AreEqual(5, actualResponse.Value.contentList.Count);
@@ -53,14 +53,20 @@ namespace LunaCinemasTest
         [TestMethod]
         public void ProhibitedWordsInReviewsAreCensoredWhenReviewIsRetrieved()
         {
-            ReviewsController controller = new ReviewsController(new ReviewFilter(_reviewContext, _filmContext));
             _filmContext.AddFindByIdResult(new Film(){Id = "5d650036280b7e2dc0b0d121"});
-            ActionResult<ResponseObject<object>> actualResponse = controller.SubmitReview("5d650036280b7e2dc0b0d121", "Test user", "3",
+            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview("5d650036280b7e2dc0b0d121", "Test user", "3",
                 "This is a test review. natwesT");
             Assert.AreEqual(true, actualResponse.Value.successful);
             List<Review> reviews = _reviewContext.FindByFilmId("5d650036280b7e2dc0b0d121");
             Review testReview = reviews[0];
             Assert.AreEqual("This is a test review. *******", testReview.ReviewBody);
+        }
+
+        [TestMethod]
+        public void CannotAddAReviewToAFilmThatDoesntExist()
+        {
+            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview("254345", "Jeff", "4", "Not too bad");
+            Assert.IsFalse(actualResponse.Value.successful);
         }
     }
 }

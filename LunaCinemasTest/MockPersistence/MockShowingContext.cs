@@ -37,5 +37,10 @@ namespace LunaCinemasTest.MockPersistence
                 return false;
             }
         }
+
+        public void AddShowing(Showing showing)
+        {
+            _showings.Add(showing);
+        }
     }
 }
