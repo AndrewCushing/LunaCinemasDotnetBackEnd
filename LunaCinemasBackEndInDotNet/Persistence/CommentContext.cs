@@ -6,7 +6,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface ICommentContext
     {
-        List<Comment> FindById(string reviewId);
+        List<Comment> FindById(string id);
         List<Comment> FindByReviewId(string reviewId);
         void AddComment(Comment comment);
     }
@@ -21,9 +21,9 @@ namespace LunaCinemasBackEndInDotNet.Persistence
             _commentCollection = db.GetCollection<Comment>(settings.CommentsCollectionName);
         }
         
-        public List<Comment> FindById(string reviewId)
+        public List<Comment> FindById(string id)
         {
-            return _commentCollection.Find(comment => comment.ReviewId.Equals(reviewId)).ToList();
+            return _commentCollection.Find(comment => comment.Id.Equals(id)).ToList();
         }
 
         public List<Comment> FindByReviewId(string reviewId)

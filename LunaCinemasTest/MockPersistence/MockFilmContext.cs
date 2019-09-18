@@ -6,18 +6,20 @@ namespace LunaCinemasTest.MockPersistence
 {
     public class MockFilmContext : IFilmContext
     {
-        private readonly Dictionary<string, List<Film>> _findByIdResults = new Dictionary<string, List<Film>>();
+        private readonly Dictionary<string, Film> _findByIdResults = new Dictionary<string, Film>();
         private readonly List<Film> _getReleasedFilmsResults = new List<Film>();
         private readonly List<Film> _getUpcomingFilmsResults = new List<Film>();
         private readonly List<Film> _getAllFilmsResults = new List<Film>();
         public List<Film> FindById(string filmId)
         {
-            return _findByIdResults[filmId];
+            List<Film> result = new List<Film>();
+            result.Add(_findByIdResults[filmId]);
+            return result;
         }
 
-        public void AddFindByIdResult(string filmId, List<Film> result)
+        public void AddFindByIdResult(Film filmToReturn)
         {
-            _findByIdResults[filmId] = result;
+            _findByIdResults[filmToReturn.Id] = filmToReturn;
         }
 
         public List<Film> GetReleasedFilms()
@@ -45,7 +47,7 @@ namespace LunaCinemasTest.MockPersistence
             return _getAllFilmsResults;
         }
 
-        public void AddToAllGetFilmResults(List<Film> filmsToAdd)
+        public void AddToGetAllFilmResults(List<Film> filmsToAdd)
         {
             _getAllFilmsResults.AddRange(filmsToAdd);
         }

@@ -11,5 +11,7 @@
 
         public static readonly string UnableToRetrieveUpcomingFilms =
             "Unable to retrieve upcoming films. Please check your connection and try again.";
+
+        public static readonly string ReviewSubmittedWordsWereCensored = "Review submitted successfully. Words were censored.";
     }
 }

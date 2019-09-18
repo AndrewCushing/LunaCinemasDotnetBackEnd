@@ -12,7 +12,6 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             {
                 thingToFilter = thingToFilter.Replace(prohibitedWords[j], GetStars(prohibitedWords[j]), true, new CultureInfo("es-ES", false));
             }
-            
             return thingToFilter;
         }
 

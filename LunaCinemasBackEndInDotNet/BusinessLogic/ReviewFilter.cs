@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
@@ -20,19 +19,26 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<object>> GetByFilmId(string id)
         {
-            List<Film> film = _filmContext.FindById(id);
-            List<Review> reviews = _reviewContext.FindByFilmId(id);
-            ResponseObject<object> res = new ResponseObject<object>(true, $"Retrieved film data and reviews as a list. There was {reviews.Count} reviews for that film", new List<object>(film));
-            if (reviews.Count > 0)
+            try
             {
-                res.contentList.AddRange(reviews);
+                List<Film> film = _filmContext.FindById(id);
+                List<Review> reviews = _reviewContext.FindByFilmId(id);
+                ResponseObject<object> res = new ResponseObject<object>(true, $"Retrieved film data and reviews as a list. There was {reviews.Count} reviews for that film", new List<object>(film));
+                if (reviews.Count > 0)
+                {
+                    res.contentList.AddRange(reviews);
+                }
+                return res;
             }
-            return res;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public ActionResult<ResponseObject<object>> AddReview(string filmId, string username, string rating, string reviewBody)
         {
-            _reviewContext.AddReview(new Review(filmId, username, rating, reviewBody));
+            _reviewContext.AddReview(new Review(filmId, filterStuff(username),  rating, filterStuff(reviewBody)));
             return GetByFilmId(filmId);
         }
     }

@@ -62,7 +62,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             {
                 if (!SearchThisFilm(data[i], searchQuery))
                 {
-                    data.Remove(data[i]);
+                    data.RemoveAt(i);
                     j--;
                     i--;
                 }
