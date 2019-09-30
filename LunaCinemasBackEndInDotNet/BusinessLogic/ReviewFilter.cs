@@ -42,7 +42,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return GetByFilmId(filmId);
         }
 
-        internal void deleteAll()
+        internal void DeleteAll()
         {
             _reviewContext.deleteAll();
         }

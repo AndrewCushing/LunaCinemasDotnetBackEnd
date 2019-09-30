@@ -11,15 +11,15 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class InitialisationController : Controller
     {
-        private readonly InitialisationHandler _businessware;
+        private InitialisationHandler Businessware { get; }
 
         public InitialisationController(InitialisationHandler businessware)
         {
-            _businessware = businessware;
+            Businessware = businessware;
         }
         public ActionResult<ResponseObject<object>> Initialise()
         {
-            return _businessware.initialiseData();
+            return Businessware.InitialiseData();
         }
     }
 }
