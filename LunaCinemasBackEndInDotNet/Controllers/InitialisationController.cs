@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LunaCinemasBackEndInDotNet.BusinessLogic;
+﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
