@@ -14,6 +14,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         List<Review> FindByFilmId(string filmId);
         void AddReview(Review review);
         List<Review> FindById(string reviewId);
+        void deleteAll();
     }
     
     public class ReviewContext : IReviewContext
@@ -43,6 +44,11 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public List<Review> FindById(string reviewId)
         {
             return _reviewCollection.Find(review => review.Id.Equals(reviewId)).ToList();
+        }
+
+        public void deleteAll()
+        {
+            _reviewCollection.DeleteMany(review => true);
         }
     }
 }

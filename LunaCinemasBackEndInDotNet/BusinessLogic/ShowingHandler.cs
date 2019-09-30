@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +84,58 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             result.ShowingTime = oldShowing.ShowingTime;
             result.TotalNumberOfSeats = oldShowing.TotalNumberOfSeats;
             return result;
+        }
+
+        internal void AddShowing(string filmId, string screenType, string time, string date)
+        {
+            _dbContext.AddShowing(new Showing()
+            {
+                FilmId = filmId,
+                Date = date,
+                ShowingTime = time,
+                ScreenType = screenType,
+                PricePerSeat = screenType.Equals("Standard") ? 8 : 15,
+                SeatsAvailable = screenType.Equals("Standard") ? 72 : 20,
+                TotalNumberOfSeats = screenType.Equals("Standard") ? 72 : 20,
+                SeatAvailability = getSeatAvailability("Standard")
+            });
+        }
+
+        private bool[][] getSeatAvailability(string screenType)
+        {
+            if (screenType.Equals("Dbox"))
+            {
+                bool[][] temp = new bool[4][];
+                for (int i = 0 ; i < 4 ; i++)
+                {
+                    temp[i] = new bool[5];
+                }
+                return temp;
+            }
+            else
+            {
+                bool[][] temp = new bool[10][];
+                for (int i = 0; i < 10 ; i++)
+                {
+                    if (i < 2)
+                    {
+                        temp [i] = new bool[5];
+                    } else if (i > 7)
+                    {
+                        temp[i] = new bool[10];
+                    }
+                    else
+                    {
+                        temp[i] = new bool[7];
+                    }
+                }
+                return temp;
+            }
+        }
+
+        internal void DeleteAll()
+        {
+            _dbContext.DeleteAll();
         }
     }
 }

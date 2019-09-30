@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LunaCinemasBackEndInDotNet.BusinessLogic;
+﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
 

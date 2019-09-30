@@ -22,5 +22,10 @@ namespace LunaCinemasTest.MockPersistence
         {
             return reviews.FindAll(review => review.Id.Equals(reviewId));
         }
+
+        public void deleteAll()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

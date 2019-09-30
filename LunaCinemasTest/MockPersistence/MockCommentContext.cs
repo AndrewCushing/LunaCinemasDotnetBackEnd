@@ -21,5 +21,10 @@ namespace LunaCinemasTest.MockPersistence
         {
             _comments.Add(comment);
         }
+
+        public void DeleteAll()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

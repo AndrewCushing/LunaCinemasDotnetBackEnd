@@ -46,6 +46,7 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<ICommentContext, CommentContext>();
             services.AddSingleton<IReviewContext, ReviewContext>();
             services.AddSingleton<IFilmContext, FilmContext>();
+            services.AddSingleton<InitialisationHandler>();
 
             services.AddCors(options =>
             {

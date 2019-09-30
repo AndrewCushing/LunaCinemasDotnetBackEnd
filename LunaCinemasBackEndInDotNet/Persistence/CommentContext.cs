@@ -9,6 +9,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         List<Comment> FindById(string id);
         List<Comment> FindByReviewId(string reviewId);
         void AddComment(Comment comment);
+        void DeleteAll();
     }
     
     public class CommentContext : ICommentContext
@@ -34,6 +35,11 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public void AddComment(Comment comment)
         {
             _commentCollection.InsertOne(comment);
+        }
+
+        public void DeleteAll()
+        {
+            _commentCollection.DeleteMany(comment => true);
         }
     }
 }

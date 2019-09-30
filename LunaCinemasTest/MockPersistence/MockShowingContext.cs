@@ -42,5 +42,10 @@ namespace LunaCinemasTest.MockPersistence
         {
             _showings.Add(showing);
         }
+
+        public void DeleteAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

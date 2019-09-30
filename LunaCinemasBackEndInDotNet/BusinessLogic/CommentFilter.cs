@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,11 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             _commentContext.AddComment(new Comment(reviewId, filterStuff(username), filterStuff(commentBody)));
             return GetComments(reviewId);
+        }
+
+        internal void deleteAll()
+        {
+            _commentContext.DeleteAll();
         }
     }
 }

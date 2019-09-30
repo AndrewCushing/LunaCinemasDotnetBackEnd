@@ -90,5 +90,20 @@ namespace LunaCinemasTest.MockPersistence
         {
             _broken = true;
         }
+
+        public void DeleteAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddFilm(Film filmToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Film FindByTitle(string title)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

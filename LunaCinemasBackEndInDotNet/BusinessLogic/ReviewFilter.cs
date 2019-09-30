@@ -41,5 +41,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _reviewContext.AddReview(new Review(filmId, filterStuff(username),  rating, filterStuff(reviewBody)));
             return GetByFilmId(filmId);
         }
+
+        internal void deleteAll()
+        {
+            _reviewContext.deleteAll();
+        }
     }
 }

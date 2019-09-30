@@ -11,30 +11,42 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         List<Showing> GetByFilmId(string filmId);
         Showing GetById(string id);
         bool UpdateShowing(Showing oldShowing, Showing newShowing);
+        void DeleteAll();
+        void AddShowing(Showing showing);
     }
     
     public class ShowingContext : IShowingContext
     {
         private readonly ILunaCinemasDatabaseSettings _settings;
         private IMongoDatabase _database;
+        private IMongoCollection<Showing> _showingsCollection;
 
         public ShowingContext(ILunaCinemasDatabaseSettings settings)
         {
             _settings = settings;
             var client = new MongoClient(_settings.ConnectionString);
             _database = client.GetDatabase(_settings.DatabaseName);
+            _showingsCollection = _database.GetCollection<Showing>(settings.ShowingsCollectionName);
+        }
+
+        public void AddShowing(Showing showing)
+        {
+            _showingsCollection.InsertOne(showing);
+        }
+
+        public void DeleteAll()
+        {
+            _showingsCollection.DeleteMany(showing => true);
         }
 
         public List<Showing> GetByFilmId(string filmId)
         {
-            IMongoCollection<Showing> showingsCollection = _database.GetCollection<Showing>(_settings.ShowingsCollectionName);
-            return showingsCollection.Find(showing => showing.FilmId.Equals(filmId)).ToList();
+            return _showingsCollection.Find(showing => showing.FilmId.Equals(filmId)).ToList();
         }
 
         public Showing GetById(string id)
         {
-            IMongoCollection<Showing> showingsCollection = _database.GetCollection<Showing>(_settings.ShowingsCollectionName);
-            List<Showing> resultFromDb = showingsCollection.Find(showing => showing.Id.Equals(id)).ToList();
+            List<Showing> resultFromDb = _showingsCollection.Find(showing => showing.Id.Equals(id)).ToList();
             return resultFromDb.Count > 0 ? resultFromDb[0] : null;
         }
 
@@ -42,8 +54,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         {
             try
             {
-                _database.GetCollection<Showing>(_settings.ShowingsCollectionName)
-                    .ReplaceOne(showing => showing.Id.Equals(oldShowing.Id), newShowing);
+                _showingsCollection.ReplaceOne(showing => showing.Id.Equals(oldShowing.Id), newShowing);
                 return true;
             }
             catch (Exception)

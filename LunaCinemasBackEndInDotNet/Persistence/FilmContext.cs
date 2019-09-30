@@ -10,6 +10,9 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         List<Film> GetReleasedFilms();
         List<Film> GetUpcomingFilms();
         List<Film> GetAllFilms();
+        void DeleteAll();
+        void AddFilm(Film filmToAdd);
+        Film FindByTitle(string title);
     }
     public class FilmContext : IFilmContext
     {
@@ -40,6 +43,21 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public List<Film> GetAllFilms()
         {
             return _filmCollection.Find(film => true).ToList();
+        }
+
+        public void DeleteAll()
+        {
+            _filmCollection.DeleteMany(film => true);
+        }
+
+        public void AddFilm(Film filmToAdd)
+        {
+            _filmCollection.InsertOne(filmToAdd);
+        }
+
+        public Film FindByTitle(string title)
+        {
+            return _filmCollection.Find(film => film.Title.Equals(title)).ToList()[0];
         }
     }
 }
