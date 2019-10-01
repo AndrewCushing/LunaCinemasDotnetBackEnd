@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Controllers;
 using LunaCinemasBackEndInDotNet.Models;
@@ -10,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace LunaCinemasTest.MockedPersistence_tests
 {
     [TestClass]
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class MockedUserTests
     {
         private UserController _userController;
@@ -156,7 +158,16 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void OnceUserIsDeletedAccessTokenCannotBeVerified()
         {
-
+            CreateTestUser("nobody", "nobodyspassword");
+            ActionResult<ResponseObject<string>> login1Response =
+                _userController.AttemptLogin(new[] {"nobody", "nobodyspassword"});
+            Assert.IsTrue(login1Response.Value.successful);
+            ActionResult<ResponseObject<object>> deletionResponse =
+                _userController.DeleteUser(new[] {"nobody", "nobodyspassword"});
+            Assert.IsTrue(deletionResponse.Value.successful);
+            ActionResult<ResponseObject<string>> login2Response =
+                _userController.AttemptLogin(new[] { "nobody", "nobodyspassword" });
+            Assert.IsFalse(login2Response.Value.successful);
         }
 
         [TestMethod]
