@@ -46,6 +46,20 @@ namespace LunaCinemasTest
             Assert.IsFalse(actualResult.Value.successful);
         }
 
-
+        [TestMethod]
+        public void ResponseFromCreatingUserAccountRepresentsGuid()
+        {
+            ActionResult<ResponseObject<string>> actualResponse =
+                _userController.AddUser(new User("testUsername", "testPassword"));
+            try
+            {
+                Guid.Parse(actualResponse.Value.contentList[0]);
+                Assert.IsTrue(actualResponse.Value.successful);
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
+        }
     }
 }
