@@ -8,6 +8,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void SaveUser (User user);
         List<User> FindByUsername (string username);
         User FindById(string userId);
+        void DeleteUser(string userId);
 
     }
     public class UserContext : IUserContext
@@ -23,6 +24,11 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         }
 
         public User FindById(string userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteUser(string userId)
         {
             throw new System.NotImplementedException();
         }

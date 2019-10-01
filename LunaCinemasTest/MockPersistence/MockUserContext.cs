@@ -21,5 +21,10 @@ namespace LunaCinemasTest
         {
             throw new System.NotImplementedException();
         }
+
+        public void DeleteUser(string userId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
