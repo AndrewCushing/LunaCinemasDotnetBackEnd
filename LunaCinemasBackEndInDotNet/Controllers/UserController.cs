@@ -15,28 +15,36 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             _businessware = businessware;
         }
 
-        [Route("adduser")]
+        [Route("add")]
         [HttpPost]
         public ActionResult<ResponseObject<string>> AddUser([FromBody] User user)
         {
             return null;
         }
 
+        [Route("login")]
+        [HttpPost]
         public ActionResult<ResponseObject<string>> AttemptLogin([FromBody] string username, [FromBody] string password)
         {
             return null;
         }
 
+        [Route("verify")]
+        [HttpPost]
         public ActionResult<ResponseObject<object>> VerifyAccessToken([FromBody] string token)
         {
             return null;
         }
 
+        [Route("logout")]
+        [HttpPost]
         public ActionResult<ResponseObject<object>> Logout([FromBody] string token)
         {
             return null;
         }
 
+        [Route("delete")]
+        [HttpPost]
         public ActionResult<ResponseObject<object>> DeleteUser([FromBody] string username, [FromBody] string password)
         {
             return null;

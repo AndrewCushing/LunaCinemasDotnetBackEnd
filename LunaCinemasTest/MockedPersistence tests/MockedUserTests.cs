@@ -61,5 +61,24 @@ namespace LunaCinemasTest
                 Assert.Fail();
             }
         }
+
+        [TestMethod]
+        public void ResponseFromCreatingUserAccountIsValidAccessToken()
+        {
+            ActionResult<ResponseObject<string>> initialResponse =
+                _userController.AddUser(new User("testUsername", "testPassword"));
+            try
+            {
+                string accessToken = initialResponse.Value.contentList[0];
+                ActionResult<ResponseObject<object>> actualResponse = _userController.VerifyAccessToken(accessToken);
+                Assert.IsTrue(actualResponse.Value.successful);
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
+        }
+
+
     }
 }
