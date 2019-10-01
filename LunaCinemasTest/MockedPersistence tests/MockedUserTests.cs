@@ -79,6 +79,11 @@ namespace LunaCinemasTest
             }
         }
 
-
+        [TestMethod]
+        public void InvalidAccessTokensAreNotVerified()
+        {
+            ActionResult<ResponseObject<object>> actualResponse = _userController.VerifyAccessToken(Guid.NewGuid().ToString());
+            Assert.IsFalse(actualResponse.Value.successful);
+        }
     }
 }
