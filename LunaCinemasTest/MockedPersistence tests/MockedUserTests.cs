@@ -120,7 +120,11 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void OnceUserLogsOutTokenCannotBeUsed()
         {
-
+            string accessToken = _userController.AddUser(new User("bob", "pass")).Value.contentList[0];
+            ActionResult<ResponseObject<object>> actualResponse = _userController.Logout(accessToken);
+            Assert.IsTrue(actualResponse.Value.successful);
+            ActionResult<ResponseObject<object>> attemptToReuseToken = _userController.VerifyAccessToken(accessToken);
+            Assert.IsFalse(attemptToReuseToken.Value.successful);
         }
 
         [TestMethod]
