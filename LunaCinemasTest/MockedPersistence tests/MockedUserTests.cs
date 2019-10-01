@@ -146,7 +146,11 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void UserCanBeDeleted()
         {
-
+            CreateTestUser("sally", "guessmyname");
+            ActionResult<ResponseObject<object>> actualResponse =
+                _userController.DeleteUser(new[] {"sally", "guessmyname"});
+            Assert.IsTrue(actualResponse.Value.successful);
+            Assert.IsTrue(_mockUserContext.FindByUsername("sally").Count < 1);
         }
 
         [TestMethod]
