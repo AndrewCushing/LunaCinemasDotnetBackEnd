@@ -165,15 +165,24 @@ namespace LunaCinemasTest.MockedPersistence_tests
             ActionResult<ResponseObject<object>> deletionResponse =
                 _userController.DeleteUser(new[] {"nobody", "nobodyspassword"});
             Assert.IsTrue(deletionResponse.Value.successful);
-            ActionResult<ResponseObject<string>> login2Response =
-                _userController.AttemptLogin(new[] { "nobody", "nobodyspassword" });
-            Assert.IsFalse(login2Response.Value.successful);
+            ActionResult<ResponseObject<object>> verifyAccessTokenFromLogin1 =
+                _userController.VerifyAccessToken(login1Response.Value.contentList[0]);
+            Assert.IsFalse(verifyAccessTokenFromLogin1.Value.successful);
         }
 
         [TestMethod]
         public void OnceUserIsDeletedCredentialsAreNotRecognised()
         {
-
+            CreateTestUser("nobody", "nobodyspassword");
+            ActionResult<ResponseObject<string>> login1Response =
+                _userController.AttemptLogin(new[] { "nobody", "nobodyspassword" });
+            Assert.IsTrue(login1Response.Value.successful);
+            ActionResult<ResponseObject<object>> deletionResponse =
+                _userController.DeleteUser(new[] { "nobody", "nobodyspassword" });
+            Assert.IsTrue(deletionResponse.Value.successful);
+            ActionResult<ResponseObject<string>> login2Response =
+                _userController.AttemptLogin(new[] { "nobody", "nobodyspassword" });
+            Assert.IsFalse(login2Response.Value.successful);
         }
 
         private void CreateTestUser(string username, string password)
