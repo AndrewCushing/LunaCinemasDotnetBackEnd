@@ -130,7 +130,17 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void IfUserLogsInWhileLoggedInThenOnlyLatestTokenCanBeUsed()
         {
-
+            CreateTestUser("bob", "pass");
+            string accessToken1 = _userController.AttemptLogin(new [] {"bob", "pass"}).Value.contentList[0];
+            ActionResult<ResponseObject<object>> firstLoginResponse = _userController.Logout(accessToken1);
+            Assert.IsTrue(firstLoginResponse.Value.successful);
+            string accessToken2 = _userController.AttemptLogin(new[] { "bob", "pass" }).Value.contentList[0];
+            ActionResult<ResponseObject<object>> secondLoginResponse = _userController.Logout(accessToken2);
+            Assert.IsTrue(secondLoginResponse.Value.successful);
+            ActionResult<ResponseObject<object>> attemptToReuseToken1 = _userController.VerifyAccessToken(accessToken1);
+            Assert.IsFalse(attemptToReuseToken1.Value.successful);
+            ActionResult<ResponseObject<object>> attemptToReuseToken2 = _userController.VerifyAccessToken(accessToken2);
+            Assert.IsTrue(attemptToReuseToken2.Value.successful);
         }
 
         [TestMethod]
