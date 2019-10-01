@@ -24,7 +24,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("login")]
         [HttpPost]
-        public ActionResult<ResponseObject<string>> AttemptLogin([FromBody] string username, [FromBody] string password)
+        public ActionResult<ResponseObject<string>> AttemptLogin([FromBody] string[] usernameAndPassword)
         {
             return null;
         }
@@ -45,7 +45,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("delete")]
         [HttpPost]
-        public ActionResult<ResponseObject<object>> DeleteUser([FromBody] string username, [FromBody] string password)
+        public ActionResult<ResponseObject<object>> DeleteUser([FromBody] string[] usernameAndPassword)
         {
             return null;
         }

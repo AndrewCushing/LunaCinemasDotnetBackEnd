@@ -16,5 +16,10 @@ namespace LunaCinemasTest
         {
             return users.FindAll(user => user.Username.Equals(username));
         }
+
+        public User FindById(string userId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

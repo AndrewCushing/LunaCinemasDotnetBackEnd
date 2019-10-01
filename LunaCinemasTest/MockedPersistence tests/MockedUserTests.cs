@@ -7,7 +7,7 @@ using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LunaCinemasTest
+namespace LunaCinemasTest.MockedPersistence_tests
 {
     [TestClass]
     public class MockedUserTests
@@ -16,7 +16,7 @@ namespace LunaCinemasTest
         private IUserContext _mockUserContext;
 
         [TestInitialize]
-        public void CreateController()
+        public void CreateControllerAndMockContext()
         {
             _mockUserContext = new MockUserContext();
             _userController = new UserController(new UserHandler(_mockUserContext));
@@ -84,6 +84,72 @@ namespace LunaCinemasTest
         {
             ActionResult<ResponseObject<object>> actualResponse = _userController.VerifyAccessToken(Guid.NewGuid().ToString());
             Assert.IsFalse(actualResponse.Value.successful);
+        }
+
+        [TestMethod]
+        public void UserCanLoginWithValidCredentials()
+        {
+            CreateTestUser("testUser", "testPassword");
+            ActionResult<ResponseObject<string>> actualResponse =
+                _userController.AttemptLogin(new[] {"testUser", "testPassword"});
+            Assert.IsTrue(actualResponse.Value.successful);
+            string accessToken = actualResponse.Value.contentList[0];
+            Assert.IsTrue(_userController.VerifyAccessToken(accessToken).Value.successful);
+        }
+
+        [TestMethod]
+        public void UserCannotLoginWithInvalidUsernameAndPassword()
+        {
+            CreateTestUser("testUser", "testPassword");
+            ActionResult<ResponseObject<string>> actualResponse =
+                _userController.AttemptLogin(new[] { "sadsf", "ffdd" });
+            Assert.IsFalse(actualResponse.Value.successful);
+            Assert.IsNull(actualResponse.Value.contentList);
+        }
+
+        [TestMethod]
+        public void UserCannotLoginWithInvalidPassword()
+        {
+            CreateTestUser("testUser", "testPassword");
+            ActionResult<ResponseObject<string>> actualResponse =
+                _userController.AttemptLogin(new[] { "testUser", "ffdd" });
+            Assert.IsFalse(actualResponse.Value.successful);
+            Assert.IsNull(actualResponse.Value.contentList);
+        }
+
+        [TestMethod]
+        public void OnceUserLogsOutTokenCannotBeUsed()
+        {
+
+        }
+
+        [TestMethod]
+        public void IfUserLogsInWhileLoggedInThenOnlyLatestTokenCanBeUsed()
+        {
+
+        }
+
+        [TestMethod]
+        public void UserCanBeDeleted()
+        {
+
+        }
+
+        [TestMethod]
+        public void OnceUserIsDeletedAccessTokenCannotBeVerified()
+        {
+
+        }
+
+        [TestMethod]
+        public void OnceUserIsDeletedCredentialsAreNotRecognised()
+        {
+
+        }
+
+        private void CreateTestUser(string username, string password)
+        {
+            _userController.AddUser(new User(username, password));
         }
     }
 }

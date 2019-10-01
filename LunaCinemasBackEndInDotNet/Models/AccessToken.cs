@@ -14,7 +14,5 @@ namespace LunaCinemasBackEndInDotNet.Models
             Id = new Guid();
             Time = DateTime.Now;
         }
-
-
     }
 }

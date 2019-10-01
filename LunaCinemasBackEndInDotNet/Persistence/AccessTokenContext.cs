@@ -8,6 +8,8 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void SaveAccessToken();
         AccessToken FindById(Guid accessTokenId);
         void DeleteTokenById(Guid accessTokenId);
+        void DeleteByUserId(string userId);
+
     }
 
     public class AccessTokenContext : IAccessTokenContext
@@ -23,6 +25,11 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         }
 
         public void DeleteTokenById(Guid accessTokenId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteByUserId(string userId)
         {
             throw new NotImplementedException();
         }
