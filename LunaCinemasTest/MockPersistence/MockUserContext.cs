@@ -14,7 +14,7 @@ namespace LunaCinemasTest
 
         public List<User> FindByUsername(string username)
         {
-            return users.FindAll(user => user.Username.Equals(username));
+            return users.FindAll(user => user.Email.Equals(username));
         }
 
         public User FindById(string userId)

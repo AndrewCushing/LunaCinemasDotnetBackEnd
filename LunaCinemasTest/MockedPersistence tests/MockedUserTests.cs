@@ -21,30 +21,30 @@ namespace LunaCinemasTest.MockedPersistence_tests
         public void CreateControllerAndMockContext()
         {
             _mockUserContext = new MockUserContext();
-            _userController = new UserController(new UserHandler(_mockUserContext));
+            _userController = new UserController(new UserService(_mockUserContext));
         }
 
         [TestMethod]
         public void UserAccountCanBeCreated()
         {
-            string testUsername = "testuser1";
-            Assert.IsTrue(_mockUserContext.FindByUsername(testUsername).Count == 0);
-            _userController.AddUser(new User(testUsername,"safestpassword"));
-            List<User> actualResult = _mockUserContext.FindByUsername(testUsername);
+            string testFirstname = "testuser1";
+            Assert.IsTrue(_mockUserContext.FindByUsername(testFirstname).Count == 0);
+            _userController.AddCustomer(new Customer(testFirstname, "test", "bob@gmail.com","safestpassword"));
+            List<User> actualResult = _mockUserContext.FindByUsername(testFirstname);
             Assert.IsTrue(actualResult.Count == 1);
         }
 
         [TestMethod]
-        public void UserAccountCannotBeCreatedWithoutUsername()
+        public void UserAccountCannotBeCreatedWithoutFirstName()
         {
-            ActionResult<ResponseObject<string>> actualResult =_userController.AddUser(new User("", "safestpassword"));
+            ActionResult<ResponseObject<string>> actualResult =_userController.AddCustomer(new Customer("", "Smith", "smith@smithing.com", "safestpassword"));
             Assert.IsFalse(actualResult.Value.successful);
         }
 
         [TestMethod]
         public void UserAccountCannotBeCreatedWithoutPassword()
         {
-            ActionResult<ResponseObject<string>> actualResult = _userController.AddUser(new User("hithere", ""));
+            ActionResult<ResponseObject<string>> actualResult = _userController.AddCustomer(new Customer("hithere", "lastname", "", "0123456789012345678901234567890123456789012345678901234567891234"));
             Assert.IsFalse(actualResult.Value.successful);
         }
 
@@ -52,7 +52,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         public void ResponseFromCreatingUserAccountRepresentsGuid()
         {
             ActionResult<ResponseObject<string>> actualResponse =
-                _userController.AddUser(new User("testUsername", "testPassword"));
+                _userController.AddCustomer(new Customer("Mr", "Anderson", "Neo@matrix.com", "testPassword"));
             try
             {
                 Guid.Parse(actualResponse.Value.contentList[0]);
@@ -68,7 +68,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         public void ResponseFromCreatingUserAccountIsValidAccessToken()
         {
             ActionResult<ResponseObject<string>> initialResponse =
-                _userController.AddUser(new User("testUsername", "testPassword"));
+                _userController.AddCustomer(new Customer("Mr", "Anderson", "Neo@matrix.com", "testPassword"));
             try
             {
                 string accessToken = initialResponse.Value.contentList[0];
@@ -91,7 +91,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void UserCanLoginWithValidCredentials()
         {
-            CreateTestUser("testUser", "testPassword");
+            CreateTestCustomer("test", "test", "test@test.com", "testPassword");
             ActionResult<ResponseObject<string>> actualResponse =
                 _userController.AttemptLogin(new[] {"testUser", "testPassword"});
             Assert.IsTrue(actualResponse.Value.successful);
@@ -102,7 +102,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void UserCannotLoginWithInvalidUsernameAndPassword()
         {
-            CreateTestUser("testUser", "testPassword");
+            CreateTestCustomer("test", "test", "test@test.com", "testPassword");
             ActionResult<ResponseObject<string>> actualResponse =
                 _userController.AttemptLogin(new[] { "sadsf", "ffdd" });
             Assert.IsFalse(actualResponse.Value.successful);
@@ -112,7 +112,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void UserCannotLoginWithInvalidPassword()
         {
-            CreateTestUser("testUser", "testPassword");
+            CreateTestCustomer("test", "test", "test@test.com", "testPassword");
             ActionResult<ResponseObject<string>> actualResponse =
                 _userController.AttemptLogin(new[] { "testUser", "ffdd" });
             Assert.IsFalse(actualResponse.Value.successful);
@@ -122,7 +122,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void OnceUserLogsOutTokenCannotBeUsed()
         {
-            string accessToken = _userController.AddUser(new User("bob", "pass")).Value.contentList[0];
+            string accessToken = _userController.AddCustomer(new Customer("bob", "twit", "thisemail", "pass")).Value.contentList[0];
             ActionResult<ResponseObject<object>> actualResponse = _userController.Logout(accessToken);
             Assert.IsTrue(actualResponse.Value.successful);
             ActionResult<ResponseObject<object>> attemptToReuseToken = _userController.VerifyAccessToken(accessToken);
@@ -132,7 +132,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void IfUserLogsInWhileLoggedInThenOnlyLatestTokenCanBeUsed()
         {
-            CreateTestUser("bob", "pass");
+            CreateTestCustomer("Jeff", "nobody", "Jeff.nobody@google.com", "nobodyspassword");
             string accessToken1 = _userController.AttemptLogin(new [] {"bob", "pass"}).Value.contentList[0];
             ActionResult<ResponseObject<object>> firstLoginResponse = _userController.Logout(accessToken1);
             Assert.IsTrue(firstLoginResponse.Value.successful);
@@ -148,7 +148,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void UserCanBeDeleted()
         {
-            CreateTestUser("sally", "guessmyname");
+            CreateTestCustomer("Jeff", "nobody", "Jeff.nobody@google.com", "nobodyspassword");
             ActionResult<ResponseObject<object>> actualResponse =
                 _userController.DeleteUser(new[] {"sally", "guessmyname"});
             Assert.IsTrue(actualResponse.Value.successful);
@@ -158,7 +158,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void OnceUserIsDeletedAccessTokenCannotBeVerified()
         {
-            CreateTestUser("nobody", "nobodyspassword");
+            CreateTestCustomer("Jeff", "nobody", "Jeff.nobody@google.com", "nobodyspassword");
             ActionResult<ResponseObject<string>> login1Response =
                 _userController.AttemptLogin(new[] {"nobody", "nobodyspassword"});
             Assert.IsTrue(login1Response.Value.successful);
@@ -173,7 +173,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         [TestMethod]
         public void OnceUserIsDeletedCredentialsAreNotRecognised()
         {
-            CreateTestUser("nobody", "nobodyspassword");
+            CreateTestCustomer("Jeff", "nobody", "Jeff.nobody@google.com", "nobodyspassword");
             ActionResult<ResponseObject<string>> login1Response =
                 _userController.AttemptLogin(new[] { "nobody", "nobodyspassword" });
             Assert.IsTrue(login1Response.Value.successful);
@@ -185,9 +185,9 @@ namespace LunaCinemasTest.MockedPersistence_tests
             Assert.IsFalse(login2Response.Value.successful);
         }
 
-        private void CreateTestUser(string username, string password)
+        private void CreateTestCustomer(string firstName, string lastName, string email, string password)
         {
-            _userController.AddUser(new User(username, password));
+            _userController.AddCustomer(new Customer(firstName, lastName, email, password));
         }
     }
 }

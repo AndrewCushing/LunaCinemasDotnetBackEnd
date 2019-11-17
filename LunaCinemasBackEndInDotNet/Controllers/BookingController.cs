@@ -1,7 +1,6 @@
 ﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
 {
@@ -9,9 +8,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class BookingController
     {
-        private BookingHandler _businessware;
+        private BookingService _businessware;
 
-        public BookingController(BookingHandler businessware)
+        public BookingController(BookingService businessware)
         {
             _businessware = businessware;
         }

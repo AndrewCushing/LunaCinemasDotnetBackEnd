@@ -8,40 +8,60 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class FilmController : Controller
     {
-        private readonly FilmGrabber _businessWare;
+        private readonly FilmService _businessware;
 
-        public FilmController(FilmGrabber _businessware)
+        public FilmController(FilmService businessware)
         {
-            _businessWare = _businessware;
+            _businessware = businessware;
         }
 
         [Route("getnewfilms")]
         [HttpGet]
         public ActionResult<ResponseObject<Film>> GetNewFilms()
         {
-            return _businessWare.GetNew();
+            return _businessware.GetNew();
         }
 
         [Route("getfilm/{id}")]
         [HttpGet("id")]
         public ActionResult<ResponseObject<Film>> GetFilm(string id)
         {
-            return _businessWare.GetById(id);
+            return _businessware.GetById(id);
         }
 
         [Route("getupcomingfilms")]
         [HttpGet]
         public ActionResult<ResponseObject<Film>> GetUpcomingFilms()
         {
-            return _businessWare.GetUpcoming();
+            return _businessware.GetUpcoming();
         }
 
         [Route("search/{searchQuery}")]
         [HttpGet]
         public ActionResult<ResponseObject<Film>> SearchFilms([FromRoute] string searchQuery)
         {
-            return _businessWare.SearchFilms(searchQuery);
+            return _businessware.SearchFilms(searchQuery);
         }
 
+        [Route("add")]
+        [HttpPost]
+        public ActionResult<ResponseObject<Film>> AddFilm([FromBody] Film film)
+        {
+            return _businessware.AddFilm(film);
+        }
+
+        [Route("update")]
+        [HttpPost]
+        public ActionResult<ResponseObject<Film>> UpdateFilm([FromBody] Film film)
+        {
+            return _businessware.UpdateFilm(film);
+        }
+
+        [Route("delete")]
+        [HttpPut]
+        public ActionResult<ResponseObject<Film>> DeleteFilm([FromBody] string filmId)
+        {
+            return _businessware.DeleteFilm(filmId);
+        }
     }
 }

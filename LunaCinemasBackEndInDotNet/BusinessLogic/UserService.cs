@@ -2,11 +2,11 @@
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
-    public class UserHandler
+    public class UserService
     {
         private readonly IUserContext _userContext;
 
-        public UserHandler(IUserContext userContext)
+        public UserService(IUserContext userContext)
         {
             _userContext = userContext;
         }

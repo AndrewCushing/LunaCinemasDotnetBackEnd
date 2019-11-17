@@ -4,15 +4,16 @@ namespace LunaCinemasBackEndInDotNet.Models
 {
     public class AccessToken
     {
-        public Guid Id { get; }
+        public string Id { get; set; }
+        public Guid Token { get; }
         public string UserId { get; set; }
-        public DateTime Time { get; }
+        public DateTime CreationTime { get; }
 
         public AccessToken(string userId)
         {
             UserId = userId;
-            Id = new Guid();
-            Time = DateTime.Now;
+            Token = Guid.NewGuid();
+            CreationTime = DateTime.Now;
         }
     }
 }

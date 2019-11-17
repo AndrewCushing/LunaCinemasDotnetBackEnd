@@ -13,16 +13,17 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void DeleteAll();
         void AddFilm(Film filmToAdd);
         Film FindByTitle(string title);
+        void UpdateFilm(Film film);
+        void DeleteFilm(string filmId);
     }
     public class FilmContext : IFilmContext
     {
-        private readonly IMongoDatabase _db;
         private readonly IMongoCollection<Film> _filmCollection;
         public FilmContext(ILunaCinemasDatabaseSettings settings)
         {
             IMongoClient client = new MongoClient(settings.ConnectionString);
-            _db = client.GetDatabase(settings.DatabaseName);
-            _filmCollection = _db.GetCollection<Film>(settings.FilmsCollectionName);
+            var db = client.GetDatabase(settings.DatabaseName);
+            _filmCollection = db.GetCollection<Film>(settings.FilmsCollectionName);
         }
         
         public List<Film> FindById(string filmId)
@@ -58,6 +59,16 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public Film FindByTitle(string title)
         {
             return _filmCollection.Find(film => film.Title.Equals(title)).ToList()[0];
+        }
+
+        public void UpdateFilm(Film film)
+        {
+            _filmCollection.ReplaceOneAsync(oldFilm => oldFilm.Id == film.Id, film);
+        }
+
+        public void DeleteFilm(string filmId)
+        {
+            _filmCollection.DeleteOne(film => film.Id == filmId);
         }
     }
 }

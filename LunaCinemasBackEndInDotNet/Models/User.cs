@@ -1,14 +1,43 @@
-﻿namespace LunaCinemasBackEndInDotNet.Models
+﻿using System.IO;
+
+namespace LunaCinemasBackEndInDotNet.Models
 {
-    public class User
+    public abstract class User
     {
-        public string id { get; set; }
-        public string Username { get; }
-        public string Password { get; }
-        public User(string username, string password)
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+
+        protected User(string firstName, string lastName, string email, string password)
         {
-            Username = username;
-            Password = password;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            SetPassword(password);
+        }
+
+        protected bool ChangePassword(string newPassword)
+        {
+            try
+            {
+                SetPassword(newPassword);
+                return true;
+            }
+            catch (InvalidDataException)
+            {
+                return false;
+            }
+        }
+
+        private void SetPassword(string password)
+        {
+            if (password.Length == 64)
+            {
+                Password = password;
+            }
+            throw new InvalidDataException("Password was not hashed appropriately.");
         }
     }
 }

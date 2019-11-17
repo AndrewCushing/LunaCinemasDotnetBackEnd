@@ -30,11 +30,11 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<ILunaCinemasDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<LunaCinemasDatabaseSettings>>().Value);
 
-            services.AddSingleton<FilmGrabber>();
+            services.AddSingleton<FilmService>();
             services.AddSingleton<ReviewFilter>();
             services.AddSingleton<CommentFilter>();
-            services.AddSingleton<ShowingHandler>();
-            services.AddSingleton<BookingHandler>();
+            services.AddSingleton<ShowingService>();
+            services.AddSingleton<BookingService>();
             services.AddSingleton<IShowingContext, ShowingContext>();
             services.AddSingleton<ICommentContext, CommentContext>();
             services.AddSingleton<IReviewContext, ReviewContext>();

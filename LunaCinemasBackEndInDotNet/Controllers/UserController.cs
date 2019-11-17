@@ -8,16 +8,23 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class UserController
     {
-        private readonly UserHandler _businessware;
+        private readonly UserService _businessware;
 
-        public UserController(UserHandler businessware)
+        public UserController(UserService businessware)
         {
             _businessware = businessware;
         }
 
-        [Route("add")]
+        [Route("addcustomer")]
         [HttpPost]
-        public ActionResult<ResponseObject<string>> AddUser([FromBody] User user)
+        public ActionResult<ResponseObject<string>> AddCustomer([FromBody] Customer customer)
+        {
+            return null;
+        }
+
+        [Route("addstaff")]
+        [HttpPost]
+        public ActionResult<ResponseObject<string>> AddStaff([FromBody] Admin admin)
         {
             return null;
         }

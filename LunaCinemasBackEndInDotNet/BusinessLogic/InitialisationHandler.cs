@@ -12,9 +12,9 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         private readonly IFilmContext _filmRepo;
         private readonly ReviewFilter _reviewHandler;
         private readonly CommentFilter _commentRepo;
-        private readonly ShowingHandler _showRepo;
+        private readonly ShowingService _showRepo;
 
-        public InitialisationHandler(IFilmContext filmRepo, ReviewFilter reviewRepo, CommentFilter commentRepo, ShowingHandler showRepo)
+        public InitialisationHandler(IFilmContext filmRepo, ReviewFilter reviewRepo, CommentFilter commentRepo, ShowingService showRepo)
         {
             _filmRepo = filmRepo;
             _reviewHandler = reviewRepo;
