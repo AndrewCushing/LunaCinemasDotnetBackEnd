@@ -10,7 +10,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         AccessToken FindById(Guid accessTokenId);
         void DeleteTokenById(Guid accessTokenId);
         void DeleteByUserId(string userId);
-
+        void DeleteAll();
     }
 
     public class AccessTokenContext : IAccessTokenContext
@@ -50,6 +50,11 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public void DeleteByUserId(string userId)
         {
             _accessTokenCollection.DeleteMany(token => token.UserId == userId);
+        }
+
+        public void DeleteAll()
+        {
+            _accessTokenCollection.DeleteMany(token => true);
         }
     }
 }

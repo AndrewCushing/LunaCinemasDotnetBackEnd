@@ -17,9 +17,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         private readonly ICustomerContext _userRepo;
         private readonly IAdminContext _adminRepo;
         private readonly UserService _userService;
+        private readonly IAccessTokenContext _accessTokenContext;
 
         public InitialisationHandler(IFilmContext filmRepo, ReviewFilter reviewRepo, CommentFilter commentRepo, ShowingService showRepo,
-        ICustomerContext userRepo, IAdminContext adminRepo, UserService userService)
+        ICustomerContext userRepo, IAdminContext adminRepo, UserService userService, IAccessTokenContext accessTokenContext)
         {
             _filmRepo = filmRepo;
             _reviewHandler = reviewRepo;
@@ -28,6 +29,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _userRepo = userRepo;
             _adminRepo = adminRepo;
             _userService = userService;
+            _accessTokenContext = accessTokenContext;
         }
 
         public ActionResult<ResponseObject<object>> InitialiseData()
@@ -42,6 +44,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         private void InitialiseUsers()
         {
+            _accessTokenContext.DeleteAll();
             _userRepo.DeleteAll();
             _adminRepo.DeleteAll();
             _userService.AddAdmin(new List<string> { "Bill", "Gates", "thebawss@microsoft.com", "0123456789012345678901234567890123456789012345678901234567890123" });
