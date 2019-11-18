@@ -5,16 +5,16 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface IAccessTokenContext
     {
-        void SaveAccessToken();
+        bool SaveAccessToken();
         AccessToken FindById(Guid accessTokenId);
-        void DeleteTokenById(Guid accessTokenId);
-        void DeleteByUserId(string userId);
+        bool DeleteTokenById(Guid accessTokenId);
+        bool DeleteByUserId(string userId);
 
     }
 
     public class AccessTokenContext : IAccessTokenContext
     {
-        public void SaveAccessToken()
+        public bool SaveAccessToken()
         {
             throw new NotImplementedException();
         }
@@ -24,12 +24,12 @@ namespace LunaCinemasBackEndInDotNet.Persistence
             throw new NotImplementedException();
         }
 
-        public void DeleteTokenById(Guid accessTokenId)
+        public bool DeleteTokenById(Guid accessTokenId)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteByUserId(string userId)
+        public bool DeleteByUserId(string userId)
         {
             throw new NotImplementedException();
         }

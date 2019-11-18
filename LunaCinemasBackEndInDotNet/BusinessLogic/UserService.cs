@@ -1,4 +1,5 @@
-﻿using LunaCinemasBackEndInDotNet.Models;
+﻿using System.Collections.Generic;
+using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,18 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<string>> AddCustomer(Customer customer)
         {
-            string newToken = _securityService.GetNewToken(customer.Id);
+            if (VerifyCustomerDetailsAreValid(customer))
+            {
+                string newToken = _securityService.GetNewToken(customer.Id);
+                _userContext.SaveUser(customer);
+                return new ResponseObject<string>(true, "Customer account created successfully", new List<string>{newToken});
+            }
+            return new ResponseObject<string>(false, "Unable to create customer account. Details are invalid.", null);
+        }
 
-            return null;
+        private static bool VerifyCustomerDetailsAreValid(Customer customer)
+        {
+            return true;
         }
     }
 }

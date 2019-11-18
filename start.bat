@@ -1,0 +1,2 @@
+cd LunaCinemasBackEndInDotNet
+dotnet run
