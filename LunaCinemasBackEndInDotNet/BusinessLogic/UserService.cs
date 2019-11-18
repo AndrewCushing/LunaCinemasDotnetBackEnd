@@ -93,5 +93,17 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             }
             return new Admin(details[0], details[1], details[2], details[3]);
         }
+
+        public ResponseObject<string> Login(List<string> usernameAndPassword)
+        {
+            string customerId = _customerContext.FindByEmailAndPassword(usernameAndPassword[0], usernameAndPassword[1]);
+            string adminId = _adminContext.FindByEmailAndPassword(usernameAndPassword[0], usernameAndPassword[1]);
+            if (customerId == null && adminId == null)
+            {
+                return new ResponseObject<string>(false, "Username or password is incorrect", null);
+            }
+            string id = customerId ?? adminId;
+            return new ResponseObject<string>(true, "Login successful", new List<string>{ _securityService.GetNewToken(id) });
+        }
     }
 }

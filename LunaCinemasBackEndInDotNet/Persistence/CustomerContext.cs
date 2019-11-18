@@ -6,32 +6,35 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface ICustomerContext
     {
-        void Save (User user);
-        List<User> FindByEmail (string email);
-        User FindById(string userId);
+        void Save (Customer customer);
+        List<Customer> FindByEmail (string email);
+        Customer FindById(string userId);
         bool DeleteUser(string userId);
         void DeleteAll();
+        string FindByEmailAndPassword(string email, string password);
     }
     public class CustomerContext : ICustomerContext
     {
-        private readonly IMongoCollection<User> _customerCollection;
+        private readonly IMongoCollection<Customer> _customerCollection;
+
         public CustomerContext(ILunaCinemasDatabaseSettings settings)
         {
             _customerCollection = new MongoClient(settings.ConnectionString)
                 .GetDatabase(settings.DatabaseName)
-                .GetCollection<User>(settings.CustomerCollectionName);
+                .GetCollection<Customer>(settings.CustomerCollectionName);
         }
-        public void Save(User user)
+        
+        public void Save(Customer customer)
         {
-            _customerCollection.InsertOne(user);
+            _customerCollection.InsertOne(customer);
         }
 
-        public List<User> FindByEmail(string email)
+        public List<Customer> FindByEmail(string email)
         {
             return _customerCollection.Find(user => user.Email == email).ToList();
         }
 
-        public User FindById(string userId)
+        public Customer FindById(string userId)
         {
             return _customerCollection.Find(user => user.Id == userId).ToList()[0];
         }
@@ -52,6 +55,17 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public void DeleteAll()
         {
             _customerCollection.DeleteMany(customer => true);
+        }
+
+        public string FindByEmailAndPassword(string email, string password)
+        {
+            List<Customer> result = _customerCollection
+                .Find(customer => customer.Email == email && customer.Password == password).ToList();
+            if (result.Count > 0)
+            {
+                return result[0].Id;
+            }
+            return null;
         }
     }
 }

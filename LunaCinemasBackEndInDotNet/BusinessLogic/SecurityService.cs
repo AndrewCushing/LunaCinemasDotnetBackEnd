@@ -13,6 +13,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public string GetNewToken(string userId)
         {
+            _accessTokenContext.DeleteByUserId(userId);
             AccessToken token = new AccessToken(userId);
             _accessTokenContext.SaveAccessToken(token);
             return token.Token.ToString();

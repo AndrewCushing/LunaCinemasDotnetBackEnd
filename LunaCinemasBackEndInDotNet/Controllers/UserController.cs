@@ -32,9 +32,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("login")]
         [HttpPost]
-        public ActionResult<ResponseObject<string>> AttemptLogin([FromBody] string[] usernameAndPassword)
+        public ActionResult<ResponseObject<string>> AttemptLogin([FromBody] List<string> usernameAndPassword)
         {
-            return null;
+            return _businessware.Login(usernameAndPassword);
         }
 
         [Route("verify")]

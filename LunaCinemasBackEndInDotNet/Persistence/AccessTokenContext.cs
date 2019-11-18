@@ -8,8 +8,8 @@ namespace LunaCinemasBackEndInDotNet.Persistence
     {
         bool SaveAccessToken(AccessToken token);
         AccessToken FindById(Guid accessTokenId);
-        bool DeleteTokenById(Guid accessTokenId);
-        bool DeleteByUserId(string userId);
+        void DeleteTokenById(Guid accessTokenId);
+        void DeleteByUserId(string userId);
 
     }
 
@@ -39,17 +39,17 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 
         public AccessToken FindById(Guid accessTokenId)
         {
-            throw new NotImplementedException();
+            return _accessTokenCollection.Find(token => token.Token == accessTokenId).ToList()[0];
         }
 
-        public bool DeleteTokenById(Guid accessTokenId)
+        public void DeleteTokenById(Guid accessTokenId)
         {
-            throw new NotImplementedException();
+            _accessTokenCollection.DeleteMany(token => token.Token == accessTokenId);
         }
 
-        public bool DeleteByUserId(string userId)
+        public void DeleteByUserId(string userId)
         {
-            throw new NotImplementedException();
+            _accessTokenCollection.DeleteMany(token => token.UserId == userId);
         }
     }
 }

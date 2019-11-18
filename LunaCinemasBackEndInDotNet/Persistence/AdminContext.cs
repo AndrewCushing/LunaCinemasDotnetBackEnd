@@ -6,32 +6,33 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface IAdminContext
     {
-        void Save(User user);
-        List<User> FindByEmail(string email);
-        User FindById(string userId);
+        void Save(Admin user);
+        List<Admin> FindByEmail(string email);
+        Admin FindById(string userId);
         bool DeleteUser(string userId);
         void DeleteAll();
+        string FindByEmailAndPassword(string email, string password);
     }
     public class AdminContext : IAdminContext
     {
-        private readonly IMongoCollection<User> _adminCollection;
+        private readonly IMongoCollection<Admin> _adminCollection;
         public AdminContext(ILunaCinemasDatabaseSettings settings)
         {
             _adminCollection = new MongoClient(settings.ConnectionString)
                 .GetDatabase(settings.DatabaseName)
-                .GetCollection<User>(settings.AdminCollectionName);
+                .GetCollection<Admin>(settings.AdminCollectionName);
         }
-        public void Save(User user)
+        public void Save(Admin admin)
         {
-            _adminCollection.InsertOne(user);
+            _adminCollection.InsertOne(admin);
         }
 
-        public List<User> FindByEmail(string email)
+        public List<Admin> FindByEmail(string email)
         {
             return _adminCollection.Find(user => user.Email == email).ToList();
         }
 
-        public User FindById(string userId)
+        public Admin FindById(string userId)
         {
             return _adminCollection.Find(user => user.Id == userId).ToList()[0];
         }
@@ -52,6 +53,17 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         public void DeleteAll()
         {
             _adminCollection.DeleteMany(admin => true);
+        }
+
+        public string FindByEmailAndPassword(string email, string password)
+        {
+            List<Admin> result = _adminCollection
+                .Find(admin => admin.Email == email && admin.Password == password).ToList();
+            if (result.Count > 0)
+            {
+                return result[0].Id;
+            }
+            return null;
         }
     }
 }

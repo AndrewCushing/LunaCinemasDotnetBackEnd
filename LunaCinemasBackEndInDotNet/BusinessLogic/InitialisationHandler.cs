@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         private readonly ShowingService _showRepo;
         private readonly ICustomerContext _userRepo;
         private readonly IAdminContext _adminRepo;
+        private readonly UserService _userService;
 
         public InitialisationHandler(IFilmContext filmRepo, ReviewFilter reviewRepo, CommentFilter commentRepo, ShowingService showRepo,
-        ICustomerContext userRepo, IAdminContext adminRepo)
+        ICustomerContext userRepo, IAdminContext adminRepo, UserService userService)
         {
             _filmRepo = filmRepo;
             _reviewHandler = reviewRepo;
@@ -25,6 +27,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _showRepo = showRepo;
             _userRepo = userRepo;
             _adminRepo = adminRepo;
+            _userService = userService;
         }
 
         public ActionResult<ResponseObject<object>> InitialiseData()
@@ -41,6 +44,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             _userRepo.DeleteAll();
             _adminRepo.DeleteAll();
+            _userService.AddAdmin(new List<string> { "Bill", "Gates", "thebawss@microsoft.com", "0123456789012345678901234567890123456789012345678901234567890123" });
         }
 
         private void InitialiseFilms()
