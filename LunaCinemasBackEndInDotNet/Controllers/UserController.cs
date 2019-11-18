@@ -19,7 +19,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         [HttpPost]
         public ActionResult<ResponseObject<string>> AddCustomer([FromBody] Customer customer)
         {
-            return null;
+            return _businessware.AddCustomer(customer);
         }
 
         [Route("addstaff")]

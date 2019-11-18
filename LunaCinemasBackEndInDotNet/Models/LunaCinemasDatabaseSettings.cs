@@ -10,6 +10,7 @@ namespace LunaCinemasBackEndInDotNet.Models
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
         public string BookingCollectionName { get; set; }
+        public string AccessTokenCollectionName { get; set; }
         public string ShowingsCollectionName { get; set; }
     }
 
@@ -22,5 +23,6 @@ namespace LunaCinemasBackEndInDotNet.Models
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
         string BookingCollectionName { get; set; }
+        string AccessTokenCollectionName { get; set; }
     }
 }
