@@ -1,11 +1,12 @@
 ﻿using System;
-using Microsoft.AspNetCore.Authentication.Twitter;
+using LunaCinemasBackEndInDotNet.Models;
+using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface IAccessTokenContext
     {
-        bool SaveAccessToken();
+        bool SaveAccessToken(AccessToken token);
         AccessToken FindById(Guid accessTokenId);
         bool DeleteTokenById(Guid accessTokenId);
         bool DeleteByUserId(string userId);
@@ -14,9 +15,26 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 
     public class AccessTokenContext : IAccessTokenContext
     {
-        public bool SaveAccessToken()
+        private readonly IMongoCollection<AccessToken> _accessTokenCollection;
+
+        public AccessTokenContext(ILunaCinemasDatabaseSettings settings)
         {
-            throw new NotImplementedException();
+            _accessTokenCollection = new MongoClient(settings.ConnectionString)
+                .GetDatabase(settings.DatabaseName)
+                .GetCollection<AccessToken>(settings.AccessTokenCollectionName);
+        }
+
+        public bool SaveAccessToken(AccessToken token)
+        {
+            try
+            {
+                _accessTokenCollection.InsertOne(token);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public AccessToken FindById(Guid accessTokenId)

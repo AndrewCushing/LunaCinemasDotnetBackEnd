@@ -1,22 +1,20 @@
 ﻿using LunaCinemasBackEndInDotNet.Models;
-using MongoDB.Driver;
+using LunaCinemasBackEndInDotNet.Persistence;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class SecurityService
     {
-        private readonly IMongoCollection<AccessToken> _accessTokenCollection;
-        public SecurityService(ILunaCinemasDatabaseSettings settings)
+        private readonly IAccessTokenContext _accessTokenContext;
+        public SecurityService(IAccessTokenContext accessTokenContext)
         {
-            _accessTokenCollection = new MongoClient(settings.ConnectionString)
-                .GetDatabase(settings.DatabaseName)
-                .GetCollection<AccessToken>(settings.AccessTokenCollectionName);
+            _accessTokenContext = accessTokenContext;
         }
 
         public string GetNewToken(string userId)
         {
             AccessToken token = new AccessToken(userId);
-            _accessTokenCollection.InsertOne(token);
+            _accessTokenContext.SaveAccessToken(token);
             return token.Token.ToString();
         }
     }

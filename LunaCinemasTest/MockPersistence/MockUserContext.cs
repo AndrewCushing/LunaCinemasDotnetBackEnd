@@ -12,9 +12,9 @@ namespace LunaCinemasTest
             users.Add(user);
         }
 
-        public List<User> FindByUsername(string username)
+        public List<User> FindByEmail(string email)
         {
-            return users.FindAll(user => user.Email.Equals(username));
+            return users.FindAll(user => user.Email.Equals(email));
         }
 
         public User FindById(string userId)

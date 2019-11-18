@@ -16,7 +16,6 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _securityService = securityService;
         }
 
-
         public ActionResult<ResponseObject<string>> AddCustomer(Customer customer)
         {
             if (VerifyCustomerDetailsAreValid(customer))
