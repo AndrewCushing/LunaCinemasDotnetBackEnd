@@ -9,6 +9,7 @@ namespace LunaCinemasBackEndInDotNet.Models
         public string FilmsCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
+        public string BookingCollectionName { get; set; }
         public string ShowingsCollectionName { get; set; }
     }
 

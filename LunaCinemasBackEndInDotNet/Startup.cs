@@ -36,6 +36,7 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<ShowingService>();
             services.AddSingleton<BookingService>();
             services.AddSingleton<IShowingContext, ShowingContext>();
+            services.AddSingleton<IBookingContext, BookingContext>();
             services.AddSingleton<ICommentContext, CommentContext>();
             services.AddSingleton<IReviewContext, ReviewContext>();
             services.AddSingleton<IFilmContext, FilmContext>();
