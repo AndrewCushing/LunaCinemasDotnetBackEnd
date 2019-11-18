@@ -10,43 +10,48 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         List<User> FindByEmail (string email);
         User FindById(string userId);
         bool DeleteUser(string userId);
-
+        void DeleteAll();
     }
     public class CustomerContext : ICustomerContext
     {
-        private readonly IMongoCollection<User> _userCollection;
+        private readonly IMongoCollection<User> _customerCollection;
         public CustomerContext(ILunaCinemasDatabaseSettings settings)
         {
-            _userCollection = new MongoClient(settings.ConnectionString)
+            _customerCollection = new MongoClient(settings.ConnectionString)
                 .GetDatabase(settings.DatabaseName)
                 .GetCollection<User>(settings.CustomerCollectionName);
         }
         public void SaveUser(User user)
         {
-            _userCollection.InsertOne(user);
+            _customerCollection.InsertOne(user);
         }
 
         public List<User> FindByEmail(string email)
         {
-            return _userCollection.Find(user => user.Email == email).ToList();
+            return _customerCollection.Find(user => user.Email == email).ToList();
         }
 
         public User FindById(string userId)
         {
-            return _userCollection.Find(user => user.Id == userId).ToList()[0];
+            return _customerCollection.Find(user => user.Id == userId).ToList()[0];
         }
 
         public bool DeleteUser(string userId)
         {
             try
             {
-                _userCollection.DeleteOne(user => user.Id == userId);
+                _customerCollection.DeleteOne(user => user.Id == userId);
                 return true;
             }
             catch (KeyNotFoundException)
             {
                 return false;
             }
+        }
+
+        public void DeleteAll()
+        {
+            _customerCollection.DeleteMany(customer => true);
         }
     }
 }
