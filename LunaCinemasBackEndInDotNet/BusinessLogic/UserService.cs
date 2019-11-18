@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
@@ -11,45 +12,86 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
     {
         private readonly ICustomerContext _customerContext;
         private readonly SecurityService _securityService;
+        private readonly IAdminContext _adminContext;
 
-        public UserService(ICustomerContext customerContext, SecurityService securityService)
+        public UserService(ICustomerContext customerContext, SecurityService securityService, IAdminContext adminContext)
         {
             _customerContext = customerContext;
             _securityService = securityService;
+            _adminContext = adminContext;
         }
 
-        public ActionResult<ResponseObject<string>> AddCustomer(List<string> customerDetails)
+        public ResponseObject<string> AddCustomer(List<string> customerDetails)
+        {
+            return AddUser(typeof(Customer), customerDetails);
+        }
+
+        public ResponseObject<string> AddAdmin(List<string> adminDetails)
+        {
+            return AddUser(typeof(Admin), adminDetails);
+        }
+
+        private bool VerifyUserDetailsAreValid(User user)
+        {
+            return true;
+        }
+
+        private ResponseObject<string> AddUser(Type type, List<string> details)
         {
             bool success = false;
             string reason;
             List<string> content = null;
             try
             {
-                Customer customer = new Customer(customerDetails[0], customerDetails[1], customerDetails[2],
-                    customerDetails[3]);
-                if (VerifyCustomerDetailsAreValid(customer))
+                User user = CreateUser(type, details);
+                if (VerifyUserDetailsAreValid(user))
                 {
-                    _customerContext.SaveUser(customer);
-                    string newToken = _securityService.GetNewToken(_customerContext.FindByEmail(customer.Email)[0].Id);
+                    SaveUser(user);
+                    string newToken = _securityService.GetNewToken(GetUserId(type, details[2]));
                     success = true;
-                    reason = "Customer account created successfully";
+                    reason = $"{type.Name} account created successfully";
                     content = new List<string> { newToken };
                 }
                 else
                 {
-                    reason = "Unable to create customer account. Details are invalid.";
+                    reason = $"Unable to create {type.Name} account. Details are invalid.";
                 }
             }
             catch (InvalidDataException)
             {
-                reason = "Unable to create customer account. Password was not hashed correctly";
+                reason = $"Unable to create {type.Name} account. Password was not hashed correctly";
             }
             return new ResponseObject<string>(success, reason, content);
         }
 
-        private static bool VerifyCustomerDetailsAreValid(Customer customer)
+        private string GetUserId(Type type, string email)
         {
-            return true;
+            if (type.IsEquivalentTo(typeof(Customer)))
+            {
+                return _customerContext.FindByEmail(email)[0].Id;
+            }
+            return _adminContext.FindByEmail(email)[0].Id;
+        }
+
+        private void SaveUser(User user)
+        {
+            if (user.GetType().IsEquivalentTo(typeof(Customer)))
+            {
+                _customerContext.Save((Customer)user);
+            }
+            else
+            {
+                _adminContext.Save((Admin)user);
+            }
+        }
+
+        private User CreateUser(Type type, List<string> details)
+        {
+            if (type.IsEquivalentTo(typeof(Customer)))
+            {
+                return new Customer(details[0], details[1], details[2], details[3]);
+            }
+            return new Admin(details[0], details[1], details[2], details[3]);
         }
     }
 }

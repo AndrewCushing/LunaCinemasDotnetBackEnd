@@ -25,9 +25,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("addstaff")]
         [HttpPost]
-        public ActionResult<ResponseObject<string>> AddStaff([FromBody] Admin admin)
+        public ActionResult<ResponseObject<string>> AddStaff([FromBody] List<string> adminDetails)
         {
-            return null;
+            return _businessware.AddAdmin(adminDetails);
         }
 
         [Route("login")]

@@ -2,7 +2,7 @@
 {
     public class Admin : User
     {
-        public Admin(string id,
+        public Admin(
             string firstName,
             string lastName,
             string email,

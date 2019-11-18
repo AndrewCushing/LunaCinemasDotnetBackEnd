@@ -7,7 +7,7 @@ namespace LunaCinemasTest
     public class MockCustomerContext : ICustomerContext
     {
         private readonly List<User> users = new List<User>();
-        public void SaveUser(User user)
+        public void Save(User user)
         {
             users.Add(user);
         }

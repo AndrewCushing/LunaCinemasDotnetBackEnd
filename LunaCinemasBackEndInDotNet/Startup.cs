@@ -43,6 +43,7 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<IReviewContext, ReviewContext>();
             services.AddSingleton<IFilmContext, FilmContext>();
             services.AddSingleton<ICustomerContext, CustomerContext>();
+            services.AddSingleton<IAdminContext, AdminContext>();
             services.AddSingleton<IAccessTokenContext, AccessTokenContext>();
             services.AddSingleton<InitialisationHandler>();
 

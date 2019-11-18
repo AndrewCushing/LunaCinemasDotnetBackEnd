@@ -6,7 +6,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface IAdminContext
     {
-        void SaveUser(User user);
+        void Save(User user);
         List<User> FindByEmail(string email);
         User FindById(string userId);
         bool DeleteUser(string userId);
@@ -21,7 +21,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
                 .GetDatabase(settings.DatabaseName)
                 .GetCollection<User>(settings.AdminCollectionName);
         }
-        public void SaveUser(User user)
+        public void Save(User user)
         {
             _adminCollection.InsertOne(user);
         }
