@@ -1,9 +1,13 @@
 ﻿using System.IO;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace LunaCinemasBackEndInDotNet.Models
 {
     public abstract class User
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,29 +19,29 @@ namespace LunaCinemasBackEndInDotNet.Models
             FirstName = firstName;
             LastName = lastName;
             Email = email;
-            SetPassword(password);
+            if (!SetPassword(password))
+            {
+                throw new InvalidDataException("Password not hashed correctly");
+            }
         }
 
         protected bool ChangePassword(string newPassword)
         {
-            try
+            if (Password != newPassword)
             {
-                SetPassword(newPassword);
-                return true;
+                return SetPassword(newPassword);
             }
-            catch (InvalidDataException)
-            {
-                return false;
-            }
+            return false;
         }
 
-        private void SetPassword(string password)
+        private bool SetPassword(string password)
         {
             if (password.Length == 64)
             {
                 Password = password;
+                return true;
             }
-            throw new InvalidDataException("Password was not hashed appropriately.");
+            return false;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
+﻿using System.Collections.Generic;
+using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("addcustomer")]
         [HttpPost]
-        public ActionResult<ResponseObject<string>> AddCustomer([FromBody] Customer customer)
+        public ActionResult<ResponseObject<string>> AddCustomer([FromBody] List<string> customerDetails)
         {
-            return _businessware.AddCustomer(customer);
+            return _businessware.AddCustomer(customerDetails);
         }
 
         [Route("addstaff")]

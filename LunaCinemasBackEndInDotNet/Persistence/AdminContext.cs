@@ -4,22 +4,22 @@ using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.Persistence
 {
-    public interface IUserContext
+    public interface IAdminContext
     {
-        void SaveUser (User user);
-        List<User> FindByEmail (string email);
+        void SaveUser(User user);
+        List<User> FindByEmail(string email);
         User FindById(string userId);
-        void DeleteUser(string userId);
+        bool DeleteUser(string userId);
 
     }
-    public class UserContext : IUserContext
+    public class AdminContext : IAdminContext
     {
         private readonly IMongoCollection<User> _userCollection;
-        public UserContext(ILunaCinemasDatabaseSettings settings)
+        public AdminContext(ILunaCinemasDatabaseSettings settings)
         {
             _userCollection = new MongoClient(settings.ConnectionString)
                 .GetDatabase(settings.DatabaseName)
-                .GetCollection<User>(settings.UserCollectionName);
+                .GetCollection<User>(settings.AdminCollectionName);
         }
         public void SaveUser(User user)
         {
@@ -33,12 +33,20 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 
         public User FindById(string userId)
         {
-            throw new System.NotImplementedException();
+            return _userCollection.Find(user => user.Id == userId).ToList()[0];
         }
 
-        public void DeleteUser(string userId)
+        public bool DeleteUser(string userId)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _userCollection.DeleteOne(user => user.Id == userId);
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
         }
     }
 }

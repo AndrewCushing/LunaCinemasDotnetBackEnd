@@ -7,7 +7,6 @@
             string lastName,
             string email,
             string password) : base(firstName, lastName, email, password)
-        {
-        }
+        {}
     }
 }

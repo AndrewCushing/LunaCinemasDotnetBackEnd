@@ -4,7 +4,7 @@ using LunaCinemasBackEndInDotNet.Persistence;
 
 namespace LunaCinemasTest
 {
-    public class MockUserContext : IUserContext
+    public class MockCustomerContext : ICustomerContext
     {
         private readonly List<User> users = new List<User>();
         public void SaveUser(User user)

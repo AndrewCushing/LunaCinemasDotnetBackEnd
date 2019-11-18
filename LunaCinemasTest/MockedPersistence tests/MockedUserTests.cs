@@ -15,22 +15,22 @@ namespace LunaCinemasTest.MockedPersistence_tests
     public class MockedUserTests
     {
         private UserController _userController;
-        private IUserContext _mockUserContext;
+        private ICustomerContext _mockCustomerContext;
 
         [TestInitialize]
         public void CreateControllerAndMockContext()
         {
-            _mockUserContext = new MockUserContext();
-            _userController = new UserController(new UserService(_mockUserContext));
+            _mockCustomerContext = new MockCustomerContext();
+            _userController = new UserController(new UserService(_mockCustomerContext));
         }
 
         [TestMethod]
         public void UserAccountCanBeCreated()
         {
             string testFirstname = "testuser1";
-            Assert.IsTrue(_mockUserContext.FindByEmail(testFirstname).Count == 0);
+            Assert.IsTrue(_mockCustomerContext.FindByEmail(testFirstname).Count == 0);
             _userController.AddCustomer(new Customer(testFirstname, "test", "bob@gmail.com","safestpassword"));
-            List<User> actualResult = _mockUserContext.FindByEmail(testFirstname);
+            List<User> actualResult = _mockCustomerContext.FindByEmail(testFirstname);
             Assert.IsTrue(actualResult.Count == 1);
         }
 
@@ -152,7 +152,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
             ActionResult<ResponseObject<object>> actualResponse =
                 _userController.DeleteUser(new[] {"sally", "guessmyname"});
             Assert.IsTrue(actualResponse.Value.successful);
-            Assert.IsTrue(_mockUserContext.FindByEmail("sally").Count < 1);
+            Assert.IsTrue(_mockCustomerContext.FindByEmail("sally").Count < 1);
         }
 
         [TestMethod]

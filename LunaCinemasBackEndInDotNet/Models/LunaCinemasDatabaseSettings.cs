@@ -11,7 +11,8 @@ namespace LunaCinemasBackEndInDotNet.Models
         public string DatabaseName { get; set; }
         public string BookingCollectionName { get; set; }
         public string AccessTokenCollectionName { get; set; }
-        public string UserCollectionName { get; set; }
+        public string CustomerCollectionName { get; set; }
+        public string AdminCollectionName { get; set; }
         public string ShowingsCollectionName { get; set; }
     }
 
@@ -25,6 +26,7 @@ namespace LunaCinemasBackEndInDotNet.Models
         string DatabaseName { get; set; }
         string BookingCollectionName { get; set; }
         string AccessTokenCollectionName { get; set; }
-        string UserCollectionName { get; set; }
+        string CustomerCollectionName { get; set; }
+        string AdminCollectionName { get; set; }
     }
 }

@@ -4,21 +4,21 @@ namespace LunaCinemasBackEndInDotNet.Models
 {
     public class Customer : User
     {
-        private readonly List<string> _bookingIds;
+        public List<string> BookingIds { get; set; }
         public Customer(string firstName, string lastName, string email, string password)
             : base(firstName, lastName, email, password)
         {
-            _bookingIds = new List<string>();
+            BookingIds = new List<string>();
         }
 
         public void AddBooking(string bookingId)
         {
-            _bookingIds.Add(bookingId);
+            BookingIds.Add(bookingId);
         }
 
         public List<string> GetBookings()
         {
-            return _bookingIds;
+            return BookingIds;
         }
     }
 }

@@ -35,11 +35,15 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<CommentFilter>();
             services.AddSingleton<ShowingService>();
             services.AddSingleton<BookingService>();
+            services.AddSingleton<UserService>();
+            services.AddSingleton<SecurityService>();
             services.AddSingleton<IShowingContext, ShowingContext>();
             services.AddSingleton<IBookingContext, BookingContext>();
             services.AddSingleton<ICommentContext, CommentContext>();
             services.AddSingleton<IReviewContext, ReviewContext>();
             services.AddSingleton<IFilmContext, FilmContext>();
+            services.AddSingleton<ICustomerContext, CustomerContext>();
+            services.AddSingleton<IAccessTokenContext, AccessTokenContext>();
             services.AddSingleton<InitialisationHandler>();
 
             services.AddCors(options =>
