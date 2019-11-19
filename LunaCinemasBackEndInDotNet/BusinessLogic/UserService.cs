@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
@@ -105,5 +103,14 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             string id = customerId ?? adminId;
             return new ResponseObject<string>(true, "Login successful", new List<string>{ _securityService.GetNewToken(id) });
         }
+
+        public ResponseObject<string> VerifyToken(string accessTokenId)
+        {
+            if (_securityService.ValidateToken(accessTokenId))
+            {
+                return new ResponseObject<string>(true, "Access token is valid and has been refreshed.", new List<string>{accessTokenId});
+            }
+            return new ResponseObject<string>(false, "Unable to verify access token", null);
+        } 
     }
 }

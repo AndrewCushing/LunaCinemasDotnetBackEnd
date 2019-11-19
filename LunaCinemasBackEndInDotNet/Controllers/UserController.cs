@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Web.Http;
 using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
 {
-    [Route("[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("[controller]")]
     [ApiController]
     public class UserController
     {
@@ -16,44 +17,44 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             _businessware = businessware;
         }
 
-        [Route("addcustomer")]
-        [HttpPost]
-        public ActionResult<ResponseObject<string>> AddCustomer([FromBody] List<string> customerDetails)
+        [Microsoft.AspNetCore.Mvc.Route("addcustomer")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public ActionResult<ResponseObject<string>> AddCustomer([Microsoft.AspNetCore.Mvc.FromBody] List<string> customerDetails)
         {
             return _businessware.AddCustomer(customerDetails);
         }
 
-        [Route("addstaff")]
-        [HttpPost]
-        public ActionResult<ResponseObject<string>> AddStaff([FromBody] List<string> adminDetails)
+        [Microsoft.AspNetCore.Mvc.Route("addstaff")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public ActionResult<ResponseObject<string>> AddStaff([Microsoft.AspNetCore.Mvc.FromBody] List<string> adminDetails)
         {
             return _businessware.AddAdmin(adminDetails);
         }
 
-        [Route("login")]
-        [HttpPost]
-        public ActionResult<ResponseObject<string>> AttemptLogin([FromBody] List<string> usernameAndPassword)
+        [Microsoft.AspNetCore.Mvc.Route("login")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public ActionResult<ResponseObject<string>> AttemptLogin([Microsoft.AspNetCore.Mvc.FromBody] List<string> usernameAndPassword)
         {
             return _businessware.Login(usernameAndPassword);
         }
 
-        [Route("verify")]
-        [HttpPost]
-        public ActionResult<ResponseObject<object>> VerifyAccessToken([FromBody] string token)
+        [Microsoft.AspNetCore.Mvc.Route("verify/{token}")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public ActionResult<ResponseObject<string>> VerifyAccessToken([FromUri] string token)
+        {
+            return _businessware.VerifyToken(token);
+        }
+
+        [Microsoft.AspNetCore.Mvc.Route("logout")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public ActionResult<ResponseObject<object>> Logout([Microsoft.AspNetCore.Mvc.FromBody] string token)
         {
             return null;
         }
 
-        [Route("logout")]
-        [HttpPost]
-        public ActionResult<ResponseObject<object>> Logout([FromBody] string token)
-        {
-            return null;
-        }
-
-        [Route("delete")]
-        [HttpPost]
-        public ActionResult<ResponseObject<object>> DeleteUser([FromBody] string[] usernameAndPassword)
+        [Microsoft.AspNetCore.Mvc.Route("delete")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public ActionResult<ResponseObject<object>> DeleteUser([Microsoft.AspNetCore.Mvc.FromBody] string[] usernameAndPassword)
         {
             return null;
         }
