@@ -399,10 +399,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         private void InitialiseComments()
         {
             _commentRepo.deleteAll();
-            _commentRepo.AddComment(GetFirstReviewIdFromFilmTitle("Goodboys"), "Dale", "I completely agree");
-            _commentRepo.AddComment(GetFirstReviewIdFromFilmTitle("Goodboys"), "Ian", "You're chatting shit mate.");
-            _commentRepo.AddComment(GetFirstReviewIdFromFilmTitle("Goodboys"), "Andy", "Fuck you, you piece of shit.");
-            _commentRepo.AddComment(GetFirstReviewIdFromFilmTitle("Zombieland: Double Tap"), "Carl", "Mate, that bit at the end blew my mind! Stunning");
+            _commentRepo.AddComment(new Comment(GetFirstReviewIdFromFilmTitle("Goodboys"), "Dale", "I completely agree"));
+            _commentRepo.AddComment(new Comment(GetFirstReviewIdFromFilmTitle("Goodboys"), "Ian", "You're chatting shit mate."));
+            _commentRepo.AddComment(new Comment(GetFirstReviewIdFromFilmTitle("Goodboys"), "Andy", "Fuck you, you piece of shit."));
+            _commentRepo.AddComment(new Comment(GetFirstReviewIdFromFilmTitle("Zombieland: Double Tap"), "Carl", "Mate, that bit at the end blew my mind! Stunning"));
         }
 
         private void InitialiseShowings()

@@ -20,8 +20,12 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         }
         public ActionResult<ResponseObject<object>> GetComments(string reviewId)
         {
-            Review review = _reviewContext.FindById(reviewId)[0];
-            Film film = _filmContext.FindById(review.FilmId)[0];
+            Review review = _reviewContext.FindById(reviewId)?[0];
+            Film film = _filmContext.FindById(review?.FilmId)?[0];
+            if (review == null || film == null)
+            {
+                return new ResponseObject<object>(false, "Invalid review ID", null);
+            }
             List<Comment> commentsList = _commentContext.FindByReviewId(reviewId);
             ResponseObject<object> res = new ResponseObject<object>(true, $"Retrieved {commentsList.Count} comments for that review.", new List<object>());
             res.contentList.Add(film);
@@ -30,10 +34,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             return res;
         }
 
-        public ActionResult<ResponseObject<object>> AddComment(string reviewId, string username, string commentBody)
+        public ActionResult<ResponseObject<object>> AddComment(Comment comment)
         {
-            _commentContext.AddComment(new Comment(reviewId, filterStuff(username), filterStuff(commentBody)));
-            return GetComments(reviewId);
+            _commentContext.AddComment(comment);
+            return GetComments(comment.ReviewId);
         }
 
         internal void deleteAll()
