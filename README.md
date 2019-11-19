@@ -299,3 +299,23 @@ https://localhost:8080/film/update
 
 #### **Note:**
 contentList will contain a list of all films in the database.
+
+## Delete film:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/film/delete/{FilmId}
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Film deleted",
+    "contentList": [{Film1},{Film2},{Film3}...]
+}
+```
+
+#### **Note:**
+contentList will contain a list of all films in the database.
