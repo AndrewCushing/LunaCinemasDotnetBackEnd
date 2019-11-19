@@ -1,4 +1,21 @@
-# LunaCinemasDotnetBackEnd
+## Initialise data:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/initialisation
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Initialised data",
+    "contentList": null
+}
+```
+
+# User accounts
 
 ## Customer account creation:
 
@@ -54,23 +71,6 @@ https://localhost:8080/user/addstaff
 #### **Note:**
 Password must be 64 characters long. Intention is that this is the result of using SHA-256 on plain text password.
 
-## Initialise data:
-
-**Method:**
-GET
-
-**URL:**
-https://localhost:8080/initialisation
-
-**Example positive response:**
-```
-{
-    "successful": true,
-    "body": "Initialised data",
-    "contentList": null
-}
-```
-
 ## Login:
 
 **Method:**
@@ -98,7 +98,7 @@ https://localhost:8080/user/login
 #### **Note:**
 AccessToken will be a string representing an AccessToken created for this login session. It will be tied to the user that was logged in and will expire 5 minutes after it's last verification.
 
-## Verify access token:
+## Verify and refresh access token:
 
 **Method:**
 GET
@@ -130,6 +130,8 @@ https://localhost:8080/user/verify/{AccessToken}
 AccessToken will be returned in the response but there is no need to use this as it will not have been changed. The access token will have it's lifetime refreshed by calling this API.
 
 Whether the access token has expired or never existed, the response will be the same.
+
+# Films
 
 ## Get new films:
 
@@ -319,3 +321,55 @@ https://localhost:8080/film/delete/{FilmId}
 
 #### **Note:**
 contentList will contain a list of all films in the database.
+
+# Reviews
+
+## Get all reviews for a particular film:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/reviews/getreviews/{FilmId}
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved film data and reviews as a list. There was 4 reviews for that film",
+    "contentList": [{Film},{Review1},{Review2},{Review3},{Review4}]
+}
+```
+
+#### **Note:**
+Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film if there are any.
+
+## Add a review
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/reviews/addreview
+
+**Body:**
+```
+{
+    "filmId":"{filmId which the review is related to}",
+    "username":"{Username to be displayed as the author of the review}",
+    "rating":"{A number to signify the user's rating, still formatted as a string}",
+    "reviewBody":"{The review itself}"
+}
+```
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved film data and reviews as a list. There was 5 reviews for that film",
+    "contentList": [{Film},{Review1},{Review2},{Review3},{Review4},{Review5}]
+}
+```
+
+#### **Note:**
+Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film, including the one just added.
