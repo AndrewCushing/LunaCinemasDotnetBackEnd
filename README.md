@@ -373,3 +373,54 @@ https://localhost:8080/reviews/addreview
 
 #### **Note:**
 Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film, including the one just added.
+
+# Comments
+
+# Get comments relating to a review:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/comments/getcomments/{reviewId}
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved 2 comments for that review.",
+    "contentList": [{Film},{Review},{Comment1},{Comment2}]
+}
+```
+
+#### **Note:**
+First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review if there are any.
+
+# Add a comment:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/comments/addcomment
+
+**Body:**
+```
+{
+    "reviewId":"{Unique Id of review}",
+    "username":"{Username of author}",
+    "body":"{Body of the comment}"
+}
+```
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved 2 comments for that review.",
+    "contentList": [{Film},{Review},{Comment1},{Comment2}]
+}
+```
+
+#### **Note:**
+First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review, including the one just added.
