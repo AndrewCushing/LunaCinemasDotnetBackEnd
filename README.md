@@ -203,7 +203,7 @@ https://localhost:8080/film/getfilm/{FilmId}
 }
 ```
 
-## Search for a film:
+## Perform a search for film(s):
 
 **Method:**
 GET
@@ -219,6 +219,9 @@ https://localhost:8080/film/search/{SearchQuery}
     "contentList": [{Film1},{Film2},{Film3}]
 }
 ```
+
+#### **Note:**
+Search will be performed based on a match with title, genres, actors, directors. They will not be sorted, leaving them in the order they were added to the database.
 
 ## Add film:
 
