@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using LunaCinemasBackEndInDotNet.BusinessLogic;
-using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
@@ -10,39 +9,41 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class UserController
     {
-        private readonly UserService _businessware;
+        private readonly AccountCreationService _accountCreationService;
+        private readonly ExistingUserService _existingUserService;
 
-        public UserController(UserService businessware)
+        public UserController(AccountCreationService accountCreationService, ExistingUserService existingUserService)
         {
-            _businessware = businessware;
+            _accountCreationService = accountCreationService;
+            _existingUserService = existingUserService;
         }
 
         [Microsoft.AspNetCore.Mvc.Route("addcustomer")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public ActionResult<ResponseObject<string>> AddCustomer([Microsoft.AspNetCore.Mvc.FromBody] List<string> customerDetails)
         {
-            return _businessware.AddCustomer(customerDetails);
+            return _accountCreationService.AddCustomer(customerDetails);
         }
 
         [Microsoft.AspNetCore.Mvc.Route("addstaff")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public ActionResult<ResponseObject<string>> AddStaff([Microsoft.AspNetCore.Mvc.FromBody] List<string> adminDetails)
         {
-            return _businessware.AddAdmin(adminDetails);
+            return _accountCreationService.AddAdmin(adminDetails);
         }
 
         [Microsoft.AspNetCore.Mvc.Route("login")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public ActionResult<ResponseObject<string>> AttemptLogin([Microsoft.AspNetCore.Mvc.FromBody] List<string> usernameAndPassword)
         {
-            return _businessware.Login(usernameAndPassword);
+            return _existingUserService.Login(usernameAndPassword);
         }
 
         [Microsoft.AspNetCore.Mvc.Route("verify/{token}")]
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public ActionResult<ResponseObject<string>> VerifyAccessToken([FromUri] string token)
         {
-            return _businessware.VerifyToken(token);
+            return _existingUserService.VerifyToken(token);
         }
 
         [Microsoft.AspNetCore.Mvc.Route("logout")]

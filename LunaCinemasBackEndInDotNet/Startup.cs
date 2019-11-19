@@ -35,7 +35,6 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<CommentFilter>();
             services.AddSingleton<ShowingService>();
             services.AddSingleton<BookingService>();
-            services.AddSingleton<UserService>();
             services.AddSingleton<SecurityService>();
             services.AddSingleton<IShowingContext, ShowingContext>();
             services.AddSingleton<IBookingContext, BookingContext>();
@@ -46,6 +45,8 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<IAdminContext, AdminContext>();
             services.AddSingleton<IAccessTokenContext, AccessTokenContext>();
             services.AddSingleton<InitialisationHandler>();
+            services.AddSingleton<AccountCreationService>();
+            services.AddSingleton<ExistingUserService>();
 
             services.AddCors(options =>
             {

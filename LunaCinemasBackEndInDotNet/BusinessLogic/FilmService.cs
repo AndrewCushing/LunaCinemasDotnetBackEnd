@@ -50,7 +50,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Film>> GetById(string id)
         {
-            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(_filmContext.FindById(id)));
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Film data retrieved", new List<Film>(_filmContext.FindById(id)));
             return res;
         }
 

@@ -57,9 +57,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             return _businessware.UpdateFilm(film);
         }
 
-        [Route("delete")]
-        [HttpPut]
-        public ActionResult<ResponseObject<Film>> DeleteFilm([FromBody] string filmId)
+        [Route("delete/{filmId}")]
+        [HttpGet]
+        public ActionResult<ResponseObject<Film>> DeleteFilm(string filmId)
         {
             return _businessware.DeleteFilm(filmId);
         }

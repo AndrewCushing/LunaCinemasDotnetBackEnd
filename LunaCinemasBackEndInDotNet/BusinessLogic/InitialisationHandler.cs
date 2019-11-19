@@ -16,11 +16,13 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         private readonly ShowingService _showRepo;
         private readonly ICustomerContext _userRepo;
         private readonly IAdminContext _adminRepo;
-        private readonly UserService _userService;
         private readonly IAccessTokenContext _accessTokenContext;
+        private readonly AccountCreationService _accountCreationService;
+        private readonly ExistingUserService _existingUserService;
 
         public InitialisationHandler(IFilmContext filmRepo, ReviewFilter reviewRepo, CommentFilter commentRepo, ShowingService showRepo,
-        ICustomerContext userRepo, IAdminContext adminRepo, UserService userService, IAccessTokenContext accessTokenContext)
+        ICustomerContext userRepo, IAdminContext adminRepo, IAccessTokenContext accessTokenContext, 
+        AccountCreationService accountCreationService, ExistingUserService existingUserService)
         {
             _filmRepo = filmRepo;
             _reviewHandler = reviewRepo;
@@ -28,8 +30,9 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _showRepo = showRepo;
             _userRepo = userRepo;
             _adminRepo = adminRepo;
-            _userService = userService;
             _accessTokenContext = accessTokenContext;
+            _existingUserService = existingUserService;
+            _accountCreationService = accountCreationService;
         }
 
         public ActionResult<ResponseObject<object>> InitialiseData()
@@ -47,7 +50,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             _accessTokenContext.DeleteAll();
             _userRepo.DeleteAll();
             _adminRepo.DeleteAll();
-            _userService.AddAdmin(new List<string> { "Bill", "Gates", "thebawss@microsoft.com", "0123456789012345678901234567890123456789012345678901234567890123" });
+            _accountCreationService.AddAdmin(new List<string> { "Bill", "Gates", "thebawss@microsoft.com", "0123456789012345678901234567890123456789012345678901234567890123" });
         }
 
         private void InitialiseFilms()
