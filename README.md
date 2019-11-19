@@ -376,7 +376,7 @@ Element 0 of contentList will be the film for which Id was provided. All subsequ
 
 # Comments
 
-# Get comments relating to a review:
+## Get comments relating to a review:
 
 **Method:**
 GET
@@ -396,10 +396,10 @@ https://localhost:8080/comments/getcomments/{reviewId}
 #### **Note:**
 First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review if there are any.
 
-# Add a comment:
+## Add a comment:
 
 **Method:**
-GET
+POST
 
 **URL:**
 https://localhost:8080/comments/addcomment
@@ -424,3 +424,73 @@ https://localhost:8080/comments/addcomment
 
 #### **Note:**
 First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review, including the one just added.
+
+# Showings
+
+## Get all showings for a film:
+
+**URL:**
+https://localhost:8080/showings/getshowings/{filmId}
+
+**Method:**
+GET
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved 8 showings for that filmId",
+    "contentList": [{Film},{Showing1},{Showing2}]
+}
+```
+
+#### **Note:**
+Showing object will be of the following form:
+
+```
+{
+    "id": "{Unique Id of the showing}",
+    "filmId": "{Unique Id of the film being shown}",
+    "showingTime": "{string representation of the time of the screening}",
+    "date": "{string representation of the date of the screening}",
+    "seatsAvailable": {int representing the number of seats still available in the screening},
+    "totalNumberOfSeats": {int representing the total number of seats available in the screening},
+    "seatAvailability": {2 dimensional array of booleans, each value representing whether a seat is taken. False means the seat is not taken},
+    "screenType": "Standard",
+    "pricePerSeat": 8,
+    "javaClass": null
+}
+```
+
+# Bookings
+
+## Book some seats for a showing:
+
+**URL:**
+https://localhost:8080/booking/booktickets/{showingId}
+
+**Method:**
+POST
+
+**Body:**
+```
+["{Seat to book e.g. 2:4 where 2 is the row number and 4 is the seat within that row}","2:5","2:6","2:7","2:8"]
+```
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Your seats have been booked",
+    "contentList": null
+}
+```
+
+**Example negative response:**
+```
+{
+    "successful": false,
+    "body": "Unable to proceed with booking. Some of those seats have already been booked.",
+    "contentList": [{Updated showing information}]
+}
+```
