@@ -1,4 +1,5 @@
 ﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
+using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.Controllers
@@ -16,17 +17,17 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         }
 
         [Route("getreviews/{id}")]
-        [HttpGet("id")]
+        [HttpGet]
         public ActionResult<ResponseObject<object>> GetReviewsByFilmId(string id)
         {
             return _businessware.GetByFilmId(id);
         }
 
-        [Route("addreview/{filmid}/{username}/{rating}/{reviewBody}")]
-        [HttpPost("addreview/{filmid}/{username}/{rating}/{reviewBody}")]
-        public ActionResult<ResponseObject<object>> SubmitReview(string filmid, string username, string rating, string reviewBody)
+        [Route("addreview")]
+        [HttpPost]
+        public ActionResult<ResponseObject<object>> SubmitReview([FromBody] Review review)
         {
-            return _businessware.AddReview(filmid, username, rating, reviewBody);
+            return _businessware.AddReview(review);
             
         }
     }

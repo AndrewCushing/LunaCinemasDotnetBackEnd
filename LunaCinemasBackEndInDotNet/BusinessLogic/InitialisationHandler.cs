@@ -384,16 +384,16 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         private void InitialiseReviews()
         {
             _reviewHandler.DeleteAll();
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Goodboys").Id, "Coxy91", "3", "This film was okay, but the script was poor and the acting left a lot to be desired.");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Goodboys").Id, "Andy", "4", "Really enjoyed this film, would definitely watch again.");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Goodboys").Id, "Ian", "1", "This film was a load of shit.");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Goodboys").Id, "Dale", "5", "Film of the year! This shit was Oscar Worthy.");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Zombieland: Double Tap").Id, "Carl", "3", "Meh, it was alright, wont be watching again.");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Gemini Man").Id, "Dale", "1", "This film was so rubbish it's unreal. Will Smith should be ashamed.");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Gemini Man").Id, "Arun", "5", "WHAT A FILM! ABSOLUTELY BLEW MY MIND");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Jumanji: The Next Level").Id, "Ben", "3", "It was okay but I HATE KEVIN HART. FIRE HIM NOW!");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("Jumanji: The Next Level").Id, "Carl", "5", "Masterpiece of a film");
-            _reviewHandler.AddReview(_filmRepo.FindByTitle("The Current War").Id, "Ian", "5", "Wonderful superb, must see film.");
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Goodboys").Id, "Coxy91", "3", "This film was okay, but the script was poor and the acting left a lot to be desired."));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Goodboys").Id, "Andy", "4", "Really enjoyed this film, would definitely watch again."));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Goodboys").Id, "Ian", "1", "This film was a load of shit."));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Goodboys").Id, "Dale", "5", "Film of the year! This shit was Oscar Worthy."));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Zombieland: Double Tap").Id, "Carl", "3", "Meh, it was alright, wont be watching again."));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Gemini Man").Id, "Dale", "1", "This film was so rubbish it's unreal. Will Smith should be ashamed."));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Gemini Man").Id, "Arun", "5", "WHAT A FILM! ABSOLUTELY BLEW MY MIND"));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Jumanji: The Next Level").Id, "Ben", "3", "It was okay but I HATE KEVIN HART. FIRE HIM NOW!"));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("Jumanji: The Next Level").Id, "Carl", "5", "Masterpiece of a film"));
+            _reviewHandler.AddReview(new Review(_filmRepo.FindByTitle("The Current War").Id, "Ian", "5", "Wonderful superb, must see film."));
         }
 
         private void InitialiseComments()

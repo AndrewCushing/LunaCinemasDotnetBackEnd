@@ -36,10 +36,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             }
         }
 
-        public ActionResult<ResponseObject<object>> AddReview(string filmId, string username, string rating, string reviewBody)
+        public ActionResult<ResponseObject<object>> AddReview(Review review)
         {
-            _reviewContext.AddReview(new Review(filmId, filterStuff(username),  rating, filterStuff(reviewBody)));
-            return GetByFilmId(filmId);
+            _reviewContext.AddReview(review);
+            return GetByFilmId(review.FilmId);
         }
 
         internal void DeleteAll()
