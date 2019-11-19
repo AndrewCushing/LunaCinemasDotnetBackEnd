@@ -39,7 +39,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         }
 
         [Microsoft.AspNetCore.Mvc.Route("verify/{token}")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public ActionResult<ResponseObject<string>> VerifyAccessToken([FromUri] string token)
         {
             return _businessware.VerifyToken(token);
