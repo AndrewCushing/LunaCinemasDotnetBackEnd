@@ -61,6 +61,15 @@ namespace LunaCinemasBackEndInDotNet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to booking.
+        /// </summary>
+        internal static string RealEstateBookingContextName {
+            get {
+                return ResourceManager.GetString("RealEstateBookingContextName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to mongodb://localhost.
         /// </summary>
         internal static string RealEstateConnectionString {

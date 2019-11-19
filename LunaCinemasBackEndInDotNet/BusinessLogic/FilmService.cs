@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
-    public class FilmGrabber
+    public class FilmService
     {
         private readonly IFilmContext _filmContext;
 
-        public FilmGrabber(IFilmContext filmContext)
+        public FilmService(IFilmContext filmContext)
         {
             _filmContext = filmContext;
         }
@@ -50,7 +50,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Film>> GetById(string id)
         {
-            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Retrieved all newly released films", new List<Film>(_filmContext.FindById(id)));
+            ActionResult<ResponseObject<Film>> res = new ResponseObject<Film>(true, "Film data retrieved", new List<Film>(_filmContext.FindById(id)));
             return res;
         }
 
@@ -68,6 +68,24 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
                 }
             }
             return new ResponseObject<Film>(true, $"Search complete. Found {data.Count} films", data);
+        }
+
+        public ActionResult<ResponseObject<Film>> AddFilm(Film film)
+        {
+            _filmContext.AddFilm(film);
+            return new ResponseObject<Film>(true, "Film successfully added to database.", _filmContext.GetAllFilms());
+        }
+
+        public ActionResult<ResponseObject<Film>> UpdateFilm(Film film)
+        {
+            _filmContext.UpdateFilm(film);
+            return new ResponseObject<Film>(true, "Film updated", _filmContext.GetAllFilms());
+        }
+
+        public ActionResult<ResponseObject<Film>> DeleteFilm(string filmId)
+        {
+            _filmContext.DeleteFilm(filmId);
+            return new ResponseObject<Film>(true, "Film deleted", _filmContext.GetAllFilms());
         }
 
         private bool SearchThisFilm(Film film, string searchQuery)

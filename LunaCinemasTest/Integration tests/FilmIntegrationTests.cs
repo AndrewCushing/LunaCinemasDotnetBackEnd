@@ -13,7 +13,7 @@ namespace LunaCinemasTest.Integration_tests
         [TestMethod]
         public void ResponseIndicatesWhenDatabaseIsUnavailableAfterRequestingNewFilms()
         {
-            FilmController filmController = new FilmController(new FilmGrabber(new FilmContext(IntegrationSettings.GetIncorrectSettings())));
+            FilmController filmController = new FilmController(new FilmService(new FilmContext(IntegrationSettings.GetIncorrectSettings())));
             ActionResult<ResponseObject<Film>> actualResult = filmController.GetNewFilms();
             Assert.AreEqual(false, actualResult.Value.successful);
             Assert.AreEqual(ResponseText.UnableToRetrieveNewFilms, actualResult.Value.body);
@@ -22,7 +22,7 @@ namespace LunaCinemasTest.Integration_tests
         [TestMethod]
         public void ResponseIndicatesWhenDatabaseIsUnavailableAfterRequestingUpcomingFilms()
         {
-            FilmController filmController = new FilmController(new FilmGrabber(new FilmContext(IntegrationSettings.GetIncorrectSettings())));
+            FilmController filmController = new FilmController(new FilmService(new FilmContext(IntegrationSettings.GetIncorrectSettings())));
             ActionResult<ResponseObject<Film>> actualResult = filmController.GetUpcomingFilms();
             Assert.AreEqual(false, actualResult.Value.successful);
             Assert.AreEqual(ResponseText.UnableToRetrieveUpcomingFilms, actualResult.Value.body);

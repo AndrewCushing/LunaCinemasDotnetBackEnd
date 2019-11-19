@@ -19,7 +19,7 @@ namespace LunaCinemasTest
         public void CreateMockFilmContext()
         {
             _mockFilmContext = new MockFilmContext();
-            _testFilmController = new FilmController(new FilmGrabber(_mockFilmContext));
+            _testFilmController = new FilmController(new FilmService(_mockFilmContext));
         }
 
         [TestMethod]

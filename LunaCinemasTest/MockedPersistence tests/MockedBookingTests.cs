@@ -19,7 +19,7 @@ namespace LunaCinemasTest
         {
             _mockFilmContext = new MockFilmContext();
             _mockShowingContext = new MockShowingContext();
-            _bookingController = new BookingController(new BookingHandler(new ShowingHandler(_mockShowingContext,_mockFilmContext)));
+            _bookingController = new BookingController(new BookingService(new ShowingService(_mockShowingContext,_mockFilmContext)));
         }
 
         [TestMethod]

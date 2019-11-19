@@ -7,9 +7,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
     [ApiController]
     public class ShowingsController : ControllerBase
     {
-        private readonly ShowingHandler _businessware;
+        private readonly ShowingService _businessware;
 
-        public ShowingsController(ShowingHandler businessware)
+        public ShowingsController(ShowingService businessware)
         {
             _businessware = businessware;
         }

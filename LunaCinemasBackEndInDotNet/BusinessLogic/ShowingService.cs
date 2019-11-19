@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
-    public class ShowingHandler
+    public class ShowingService
     {
         private readonly IShowingContext _dbContext;
         private readonly IFilmContext _filmContext;
 
-        public ShowingHandler(IShowingContext dbContext, IFilmContext filmContext)
+        public ShowingService(IShowingContext dbContext, IFilmContext filmContext)
         {
             _dbContext = dbContext;
             _filmContext = filmContext;
