@@ -128,3 +128,171 @@ https://localhost:8080/user/verify/{AccessToken}
 
 #### **Note:**
 AccessToken will be returned in the response but there is no need to use this as it will not have been changed. The access token will have it's lifetime refreshed by calling this API.
+
+Whether the access token has expired or never existed, the response will be the same.
+
+## Get new films:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/film/getnewfilms
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved all newly released films",
+    "contentList": [{Film1},{Film2},{Film3}]
+}
+```
+
+#### **Note:**
+Each film will be a json object of the following format:
+
+```
+{
+    "id": "{Unique Id of film}",
+    "title": "{Title of film}",
+    "isReleased": {Boolean representing whether the film has been released. Will be true for new films, false for upcoming},
+    "length": "{Runtime of film}",
+    "briefDescription": "{Brief text describing film}",
+    "detailedDescription": "{More details synopsis describing film}",
+    "imagePath": "{Path of image to display}",
+    "year": "{Year of release of film}",
+    "classification": "{Classification of film (e.g. 12A)}",
+    "directors": ["{Director of film}","{Another director of film}"],
+    "genres": ["{Genre of film}","{Another genre film may fit into}"],
+    "actors": ["{Lead actor/actress}","{another lead actor/actress}"],
+    "javaClass": "{String for backwards compatibility with spring boot back end, usually left as null}"
+}
+```
+
+## Get upcoming films:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/film/getupcomingfilms
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved all soon to be released films",
+    "contentList": [{Film1},{Film2},{Film3}]
+}
+```
+
+## Get specific film:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/film/getfilm/{FilmId}
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Film data retrieved",
+    "contentList": [{Film}]
+}
+```
+
+## Search for a film:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/film/search/{SearchQuery}
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Search complete. Found 3 films",
+    "contentList": [{Film1},{Film2},{Film3}]
+}
+```
+
+## Add film:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/film/add
+
+**Body:**
+```
+{
+    "title": "{Title of film}",
+    "isReleased": {Boolean representing whether the film has been released. Will be true for newly released films, false for upcoming},
+    "length": "{Runtime of film}",
+    "briefDescription": "{Brief text describing film}",
+    "detailedDescription": "{More details synopsis describing film}",
+    "imagePath": "{Path of image to display}",
+    "year": "{Year of release of film}",
+    "classification": "{Classification of film (e.g. 12A)}",
+    "directors": ["{Director of film}","{Another director of film}"],
+    "genres": ["{Genre of film}","{Another genre film may fit into}"],
+    "actors": ["{Lead actor/actress}","{another lead actor/actress}"],
+    "javaClass": null
+}
+```
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Film successfully added to database.",
+    "contentList": [{Film1},{Film2},{Film3}...]
+}
+```
+
+#### **Note:**
+contentList will contain a list of all films in the database.
+
+## Update film:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/film/update
+
+**Body:**
+```
+{
+    "id": "{Unique Id of film, must match Id of the film to be updated}"
+    "title": "{Title of film}",
+    "isReleased": {Boolean representing whether the film has been released. Will be true for newly released films, false for upcoming},
+    "length": "{Runtime of film}",
+    "briefDescription": "{Brief text describing film}",
+    "detailedDescription": "{More details synopsis describing film}",
+    "imagePath": "{Path of image to display}",
+    "year": "{Year of release of film}",
+    "classification": "{Classification of film (e.g. 12A)}",
+    "directors": ["{Director of film}","{Another director of film}"],
+    "genres": ["{Genre of film}","{Another genre film may fit into}"],
+    "actors": ["{Lead actor/actress}","{another lead actor/actress}"],
+    "javaClass": null
+}
+```
+
+**Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Film updated",
+    "contentList": [{Film1},{Film2},{Film3}...]
+}
+```
+
+#### **Note:**
+contentList will contain a list of all films in the database.
