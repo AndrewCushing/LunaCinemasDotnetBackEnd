@@ -1,4 +1,21 @@
-# LunaCinemasDotnetBackEnd
+## Initialise data:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/initialisation
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Initialised data",
+    "contentList": null
+}
+```
+
+# User accounts
 
 ## Customer account creation:
 
@@ -13,7 +30,7 @@ https://localhost:8080/user/addcustomer
 ["{FirstName}","{LastName}","{Email}","{Password}"]
 ```
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -24,7 +41,7 @@ https://localhost:8080/user/addcustomer
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Password must be 64 characters long. Intention is that this is the result of using SHA-256 on plain text password.
 
 ## Admin account creation:
@@ -40,7 +57,7 @@ https://localhost:8080/user/addstaff
 ["{FirstName}","{LastName}","{Email}","{Password}"]
 ```
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -51,25 +68,8 @@ https://localhost:8080/user/addstaff
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Password must be 64 characters long. Intention is that this is the result of using SHA-256 on plain text password.
-
-## Initialise data:
-
-**Method:**
-GET
-
-**URL:**
-https://localhost:8080/initialisation
-
-**Example positive response:**
-```
-{
-    "successful": true,
-    "body": "Initialised data",
-    "contentList": null
-}
-```
 
 ## Login:
 
@@ -84,7 +84,7 @@ https://localhost:8080/user/login
 ["{Email}","{Password}"]
 ```
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -95,10 +95,10 @@ https://localhost:8080/user/login
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 AccessToken will be a string representing an AccessToken created for this login session. It will be tied to the user that was logged in and will expire 5 minutes after it's last verification.
 
-## Verify access token:
+## Verify and refresh access token:
 
 **Method:**
 GET
@@ -106,7 +106,7 @@ GET
 **URL:**
 https://localhost:8080/user/verify/{AccessToken}
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -117,7 +117,7 @@ https://localhost:8080/user/verify/{AccessToken}
 }
 ```
 
-**Example negative response:**
+**:poop:Example negative response:**
 ```
 {
     "successful": false,
@@ -126,10 +126,12 @@ https://localhost:8080/user/verify/{AccessToken}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 AccessToken will be returned in the response but there is no need to use this as it will not have been changed. The access token will have it's lifetime refreshed by calling this API.
 
 Whether the access token has expired or never existed, the response will be the same.
+
+# Films
 
 ## Get new films:
 
@@ -139,7 +141,7 @@ GET
 **URL:**
 https://localhost:8080/film/getnewfilms
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -148,7 +150,7 @@ https://localhost:8080/film/getnewfilms
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Each film will be a json object of the following format:
 
 ```
@@ -177,7 +179,7 @@ GET
 **URL:**
 https://localhost:8080/film/getupcomingfilms
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -194,7 +196,7 @@ GET
 **URL:**
 https://localhost:8080/film/getfilm/{FilmId}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -211,7 +213,7 @@ GET
 **URL:**
 https://localhost:8080/film/search/{SearchQuery}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -220,7 +222,7 @@ https://localhost:8080/film/search/{SearchQuery}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Search will be performed based on a match with title, genres, actors, directors. They will not be sorted, leaving them in the order they were added to the database.
 
 ## Add film:
@@ -249,7 +251,7 @@ https://localhost:8080/film/add
 }
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -258,7 +260,7 @@ https://localhost:8080/film/add
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 contentList will contain a list of all films in the database.
 
 ## Update film:
@@ -288,7 +290,7 @@ https://localhost:8080/film/update
 }
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -297,5 +299,198 @@ https://localhost:8080/film/update
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 contentList will contain a list of all films in the database.
+
+## Delete film:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/film/delete/{FilmId}
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Film deleted",
+    "contentList": [{Film1},{Film2},{Film3}...]
+}
+```
+
+#### :astonished:**Note:**
+contentList will contain a list of all films in the database.
+
+# Reviews
+
+## Get all reviews for a particular film:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/reviews/getreviews/{FilmId}
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved film data and reviews as a list. There was 4 reviews for that film",
+    "contentList": [{Film},{Review1},{Review2},{Review3},{Review4}]
+}
+```
+
+#### :astonished:**Note:**
+Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film if there are any.
+
+## Add a review:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/reviews/addreview
+
+**Body:**
+```
+{
+    "filmId":"{filmId which the review is related to}",
+    "username":"{Username to be displayed as the author of the review}",
+    "rating":"{A number to signify the user's rating, still formatted as a string}",
+    "reviewBody":"{The review itself}"
+}
+```
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved film data and reviews as a list. There was 5 reviews for that film",
+    "contentList": [{Film},{Review1},{Review2},{Review3},{Review4},{Review5}]
+}
+```
+
+#### :astonished:**Note:**
+Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film, including the one just added.
+
+# Comments
+
+## Get comments relating to a review:
+
+**Method:**
+GET
+
+**URL:**
+https://localhost:8080/comments/getcomments/{reviewId}
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved 2 comments for that review.",
+    "contentList": [{Film},{Review},{Comment1},{Comment2}]
+}
+```
+
+#### :astonished:**Note:**
+First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review if there are any.
+
+## Add a comment:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/comments/addcomment
+
+**Body:**
+```
+{
+    "reviewId":"{Unique Id of review}",
+    "username":"{Username of author}",
+    "body":"{Body of the comment}"
+}
+```
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved 2 comments for that review.",
+    "contentList": [{Film},{Review},{Comment1},{Comment2}]
+}
+```
+
+#### :astonished:**Note:**
+First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review, including the one just added.
+
+# Showings
+
+## Get all showings for a film:
+
+**URL:**
+https://localhost:8080/showings/getshowings/{filmId}
+
+**Method:**
+GET
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Retrieved 8 showings for that filmId",
+    "contentList": [{Film},{Showing1},{Showing2}]
+}
+```
+
+#### :astonished:**Note:**
+Showing object will be of the following form:
+
+```
+{
+    "id": "{Unique Id of the showing}",
+    "filmId": "{Unique Id of the film being shown}",
+    "showingTime": "{string representation of the time of the screening}",
+    "date": "{string representation of the date of the screening}",
+    "seatsAvailable": {int representing the number of seats still available in the screening},
+    "totalNumberOfSeats": {int representing the total number of seats available in the screening},
+    "seatAvailability": {2 dimensional array of booleans, each value representing whether a seat is taken. False means the seat is not taken},
+    "screenType": "Standard",
+    "pricePerSeat": 8,
+    "javaClass": null
+}
+```
+
+# Bookings
+
+## Book some seats for a showing:
+
+**URL:**
+https://localhost:8080/booking/booktickets/{showingId}
+
+**Method:**
+POST
+
+**Body:**
+```
+["{Seat to book e.g. 2:4 where 2 is the row number and 4 is the seat within that row}","2:5","2:6","2:7","2:8"]
+```
+
+**:+1:Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Your seats have been booked",
+    "contentList": null
+}
+```
+
+**:-1:Example negative response:**
+```
+{
+    "successful": false,
+    "body": "Unable to proceed with booking. Some of those seats have already been booked.",
+    "contentList": [{Updated showing information}]
+}
+```
