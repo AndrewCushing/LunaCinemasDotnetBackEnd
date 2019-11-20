@@ -6,7 +6,7 @@ GET
 **URL:**
 https://localhost:8080/initialisation
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -30,7 +30,7 @@ https://localhost:8080/user/addcustomer
 ["{FirstName}","{LastName}","{Email}","{Password}"]
 ```
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -57,7 +57,7 @@ https://localhost:8080/user/addstaff
 ["{FirstName}","{LastName}","{Email}","{Password}"]
 ```
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
