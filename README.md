@@ -41,7 +41,7 @@ https://localhost:8080/user/addcustomer
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Password must be 64 characters long. Intention is that this is the result of using SHA-256 on plain text password.
 
 ## Admin account creation:
@@ -68,7 +68,7 @@ https://localhost:8080/user/addstaff
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Password must be 64 characters long. Intention is that this is the result of using SHA-256 on plain text password.
 
 ## Login:
@@ -84,7 +84,7 @@ https://localhost:8080/user/login
 ["{Email}","{Password}"]
 ```
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -95,7 +95,7 @@ https://localhost:8080/user/login
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 AccessToken will be a string representing an AccessToken created for this login session. It will be tied to the user that was logged in and will expire 5 minutes after it's last verification.
 
 ## Verify and refresh access token:
@@ -106,7 +106,7 @@ GET
 **URL:**
 https://localhost:8080/user/verify/{AccessToken}
 
-**Example positive response:**
+**:+1: Example positive response:**
 ```
 {
     "successful": true,
@@ -117,7 +117,7 @@ https://localhost:8080/user/verify/{AccessToken}
 }
 ```
 
-**Example negative response:**
+**:poop:Example negative response:**
 ```
 {
     "successful": false,
@@ -126,7 +126,7 @@ https://localhost:8080/user/verify/{AccessToken}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 AccessToken will be returned in the response but there is no need to use this as it will not have been changed. The access token will have it's lifetime refreshed by calling this API.
 
 Whether the access token has expired or never existed, the response will be the same.
@@ -141,7 +141,7 @@ GET
 **URL:**
 https://localhost:8080/film/getnewfilms
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -150,7 +150,7 @@ https://localhost:8080/film/getnewfilms
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Each film will be a json object of the following format:
 
 ```
@@ -179,7 +179,7 @@ GET
 **URL:**
 https://localhost:8080/film/getupcomingfilms
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -196,7 +196,7 @@ GET
 **URL:**
 https://localhost:8080/film/getfilm/{FilmId}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -213,7 +213,7 @@ GET
 **URL:**
 https://localhost:8080/film/search/{SearchQuery}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -222,7 +222,7 @@ https://localhost:8080/film/search/{SearchQuery}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Search will be performed based on a match with title, genres, actors, directors. They will not be sorted, leaving them in the order they were added to the database.
 
 ## Add film:
@@ -251,7 +251,7 @@ https://localhost:8080/film/add
 }
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -260,7 +260,7 @@ https://localhost:8080/film/add
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 contentList will contain a list of all films in the database.
 
 ## Update film:
@@ -290,7 +290,7 @@ https://localhost:8080/film/update
 }
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -299,7 +299,7 @@ https://localhost:8080/film/update
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 contentList will contain a list of all films in the database.
 
 ## Delete film:
@@ -310,7 +310,7 @@ GET
 **URL:**
 https://localhost:8080/film/delete/{FilmId}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -319,7 +319,7 @@ https://localhost:8080/film/delete/{FilmId}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 contentList will contain a list of all films in the database.
 
 # Reviews
@@ -332,7 +332,7 @@ GET
 **URL:**
 https://localhost:8080/reviews/getreviews/{FilmId}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -341,7 +341,7 @@ https://localhost:8080/reviews/getreviews/{FilmId}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film if there are any.
 
 ## Add a review:
@@ -362,7 +362,7 @@ https://localhost:8080/reviews/addreview
 }
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -371,7 +371,7 @@ https://localhost:8080/reviews/addreview
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Element 0 of contentList will be the film for which Id was provided. All subsequent elements will be the reviews for that film, including the one just added.
 
 # Comments
@@ -384,7 +384,7 @@ GET
 **URL:**
 https://localhost:8080/comments/getcomments/{reviewId}
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -393,7 +393,7 @@ https://localhost:8080/comments/getcomments/{reviewId}
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review if there are any.
 
 ## Add a comment:
@@ -413,7 +413,7 @@ https://localhost:8080/comments/addcomment
 }
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -422,7 +422,7 @@ https://localhost:8080/comments/addcomment
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 First element of contentList will be the film, second element will be the review, subsequent elements will be the comments for that review, including the one just added.
 
 # Showings
@@ -435,7 +435,7 @@ https://localhost:8080/showings/getshowings/{filmId}
 **Method:**
 GET
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -444,7 +444,7 @@ GET
 }
 ```
 
-#### **Note:**
+#### :astonished:**Note:**
 Showing object will be of the following form:
 
 ```
@@ -477,7 +477,7 @@ POST
 ["{Seat to book e.g. 2:4 where 2 is the row number and 4 is the seat within that row}","2:5","2:6","2:7","2:8"]
 ```
 
-**Example positive response:**
+**:+1:Example positive response:**
 ```
 {
     "successful": true,
@@ -486,7 +486,7 @@ POST
 }
 ```
 
-**Example negative response:**
+**:-1:Example negative response:**
 ```
 {
     "successful": false,
