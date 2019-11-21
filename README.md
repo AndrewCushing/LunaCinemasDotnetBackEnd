@@ -158,7 +158,7 @@ https://localhost:8080/user/delete
 
 **Body:**
 ```
-["{AccessToken}","{PasswordForConfirmation}"]
+["{AccessToken}","{Password for confirmation}"]
 ```
 
 **:+1: Example positive response:**
@@ -181,6 +181,40 @@ https://localhost:8080/user/delete
 
 #### :astonished:**Note:**
 If the user is successfully deleted then the access token will also be destroyed. If the password given is incorrect then they will remain logged in.
+
+## Change password:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/user/changepassword
+
+**Body:**
+```
+["{AccessToken}","{Current Password}","{New Password}"]
+```
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Password changed successfully",
+    "contentList": null
+}
+```
+
+**:poop: Example negative response:**
+```
+{
+    "successful": false,
+    "body": "Password given does not match current password",
+    "contentList": null
+}
+```
+
+#### :astonished:**Note:**
+If the access token provided is valid then it will be refreshed, no need for a new one to be provided.
 
 # Films
 
