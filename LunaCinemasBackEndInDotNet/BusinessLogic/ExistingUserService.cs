@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using LunaCinemasBackEndInDotNet.Persistence;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
@@ -35,6 +36,12 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
                 return new ResponseObject<string>(true, "Access token is valid and has been refreshed.", new List<string> { accessTokenId });
             }
             return new ResponseObject<string>(false, "Unable to verify access token", null);
+        }
+
+        public ActionResult<ResponseObject<string>> Logout(string token)
+        {
+            _securityService.DeleteToken(token);
+            return new ResponseObject<string>(true, "User is now logged out", null);
         }
     }
 }

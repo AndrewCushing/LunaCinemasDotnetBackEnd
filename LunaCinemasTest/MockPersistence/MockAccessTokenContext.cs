@@ -10,12 +10,12 @@ namespace LunaCinemasTest.MockPersistence
             throw new System.NotImplementedException();
         }
 
-        public AccessToken FindById(string accessTokenId)
+        public AccessToken FindByGuid(string accessTokenId)
         {
             throw new System.NotImplementedException();
         }
 
-        public void DeleteTokenById(string accessTokenId)
+        public void DeleteTokenByGuid(string accessTokenId)
         {
             throw new System.NotImplementedException();
         }

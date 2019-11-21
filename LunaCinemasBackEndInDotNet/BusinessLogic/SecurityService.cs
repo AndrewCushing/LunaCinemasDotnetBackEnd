@@ -22,7 +22,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public bool ValidateToken(string tokenId)
         {
-            AccessToken accessToken = _accessTokenContext.FindById(tokenId);
+            AccessToken accessToken = _accessTokenContext.FindByGuid(tokenId);
             
             if (accessToken == null)
             {
@@ -31,10 +31,15 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
             if (accessToken.ExpiryTime.CompareTo(DateTime.Now) < 0)
             {
-                _accessTokenContext.DeleteTokenById(tokenId);
+                _accessTokenContext.DeleteTokenByGuid(tokenId);
             }
             accessToken.ExpiryTime = DateTime.Now.AddMinutes(AccessToken.MinutesBeforeTokenExpiry);
             return true;
+        }
+
+        public void DeleteToken(string token)
+        {
+            _accessTokenContext.DeleteTokenByGuid(token);
         }
     }
 }

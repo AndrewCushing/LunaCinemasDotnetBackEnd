@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Web.Http;
 using LunaCinemasBackEndInDotNet.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,44 +17,51 @@ namespace LunaCinemasBackEndInDotNet.Controllers
             _existingUserService = existingUserService;
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("addcustomer")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Route("addcustomer")]
+        [HttpPost]
         public ActionResult<ResponseObject<string>> AddCustomer([Microsoft.AspNetCore.Mvc.FromBody] List<string> customerDetails)
         {
             return _accountCreationService.AddCustomer(customerDetails);
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("addstaff")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Route("addstaff")]
+        [HttpPost]
         public ActionResult<ResponseObject<string>> AddStaff([Microsoft.AspNetCore.Mvc.FromBody] List<string> adminDetails)
         {
             return _accountCreationService.AddAdmin(adminDetails);
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("login")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Route("login")]
+        [HttpPost]
         public ActionResult<ResponseObject<string>> AttemptLogin([Microsoft.AspNetCore.Mvc.FromBody] List<string> usernameAndPassword)
         {
             return _existingUserService.Login(usernameAndPassword);
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("verify/{token}")]
-        [Microsoft.AspNetCore.Mvc.HttpGet]
-        public ActionResult<ResponseObject<string>> VerifyAccessToken([FromUri] string token)
+        [Route("verify/{token}")]
+        [HttpGet]
+        public ActionResult<ResponseObject<string>> VerifyAccessToken([FromRoute] string token)
         {
             return _existingUserService.VerifyToken(token);
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("logout")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public ActionResult<ResponseObject<object>> Logout([Microsoft.AspNetCore.Mvc.FromBody] string token)
+        [Route("logout/{token}")]
+        [HttpPost]
+        public ActionResult<ResponseObject<string>> Logout([FromRoute] string token)
+        {
+            return _existingUserService.Logout(token);
+        }
+
+        [Route("delete")]
+        [HttpPost]
+        public ActionResult<ResponseObject<object>> DeleteUser([FromBody] string[] usernameAndPassword)
         {
             return null;
         }
 
-        [Microsoft.AspNetCore.Mvc.Route("delete")]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public ActionResult<ResponseObject<object>> DeleteUser([Microsoft.AspNetCore.Mvc.FromBody] string[] usernameAndPassword)
+        [Route("changepassword")]
+        [HttpPost]
+        public ActionResult<ResponseObject<string>> ChangePassword([FromBody] string[] tokenOldNewPasswords)
         {
             return null;
         }

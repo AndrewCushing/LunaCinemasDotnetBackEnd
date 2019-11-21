@@ -7,8 +7,8 @@ namespace LunaCinemasBackEndInDotNet.Persistence
     public interface IAccessTokenContext
     {
         bool SaveAccessToken(AccessToken token);
-        AccessToken FindById(string accessTokenId);
-        void DeleteTokenById(string accessTokenId);
+        AccessToken FindByGuid(string accessTokenId);
+        void DeleteTokenByGuid(string accessTokenId);
         void DeleteByUserId(string userId);
         void DeleteAll();
     }
@@ -37,13 +37,13 @@ namespace LunaCinemasBackEndInDotNet.Persistence
             }
         }
 
-        public AccessToken FindById(string accessTokenId)
+        public AccessToken FindByGuid(string accessTokenId)
         {
             Guid tokenForComparison = Guid.Parse(accessTokenId);
-            return _accessTokenCollection.Find(accessToken => accessToken.Token == tokenForComparison).ToList()[0];
+            return _accessTokenCollection.Find(accessToken => accessToken.Token == tokenForComparison).ToList()?[0];
         }
 
-        public void DeleteTokenById(string accessTokenId)
+        public void DeleteTokenByGuid(string accessTokenId)
         {
             Guid tokenForComparison = Guid.Parse(accessTokenId);
             _accessTokenCollection.DeleteMany(token => token.Token == tokenForComparison);
