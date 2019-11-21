@@ -6,7 +6,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ReviewsController : ControllerBase
+    public class ReviewsController : Controller
     {
 
         private readonly ReviewFilter _businessware;

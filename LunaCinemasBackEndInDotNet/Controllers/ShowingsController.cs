@@ -5,7 +5,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ShowingsController : ControllerBase
+    public class ShowingsController : Controller
     {
         private readonly ShowingService _businessware;
 
@@ -15,8 +15,8 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         }
         
         [Route("getshowings/{filmId}")]
-        [HttpGet("filmId")]
-        public ActionResult<ResponseObject<object>> GetShowingsByFilmId([FromRoute] string filmId)
+        [HttpGet]
+        public ActionResult<ResponseObject<object>> GetShowingsByFilmId(string filmId)
         {
             return _businessware.GetShowingsByFilmId(filmId);
         }

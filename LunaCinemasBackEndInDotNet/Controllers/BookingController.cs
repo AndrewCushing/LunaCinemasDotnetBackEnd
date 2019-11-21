@@ -6,9 +6,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class BookingController
+    public class BookingController : Controller
     {
-        private BookingService _businessware;
+        private readonly BookingService _businessware;
 
         public BookingController(BookingService businessware)
         {
@@ -19,6 +19,9 @@ namespace LunaCinemasBackEndInDotNet.Controllers
         [HttpPost("showingId")]
         public ActionResult<ResponseObject<Showing>> BookTickets(string showingId, [FromBody] string[] seatsToBook)
         {
+            string id = "lwfjweij";
+            
+
             return _businessware.BookTickets(showingId, seatsToBook);
         }
     }

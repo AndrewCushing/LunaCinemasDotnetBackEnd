@@ -7,7 +7,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("[controller]")]
     [ApiController]
-    public class UserController
+    public class UserController : Controller
     {
         private readonly AccountCreationService _accountCreationService;
         private readonly ExistingUserService _existingUserService;

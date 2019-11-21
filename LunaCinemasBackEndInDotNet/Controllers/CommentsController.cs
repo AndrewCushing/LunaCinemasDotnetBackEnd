@@ -7,7 +7,7 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CommentsController : ControllerBase
+    public class CommentsController : Controller
     {
         private readonly CommentFilter _businessware;
         
