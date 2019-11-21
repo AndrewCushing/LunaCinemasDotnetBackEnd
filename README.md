@@ -148,6 +148,40 @@ https://localhost:8080/user/logout/{AccessToken}
 }
 ```
 
+## Delete user account:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/user/delete
+
+**Body:**
+```
+["{AccessToken}","{PasswordForConfirmation}"]
+```
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "User deleted",
+    "contentList": null
+}
+```
+
+**:poop: Example negative response:**
+```
+{
+    "successful": false,
+    "body": "Password given does not match existing password",
+    "contentList": null
+}
+```
+
+#### :astonished:**Note:**
+If the user is successfully deleted then the access token will also be destroyed. If the password given is incorrect then they will remain logged in.
+
 # Films
 
 ## Get new films:
