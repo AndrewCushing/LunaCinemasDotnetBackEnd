@@ -131,6 +131,23 @@ AccessToken will be returned in the response but there is no need to use this as
 
 Whether the access token has expired or never existed, the response will be the same.
 
+## Logout:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/user/logout/{AccessToken}
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "User is now logged out",
+    "contentList": null
+}
+```
+
 # Films
 
 ## Get new films:
