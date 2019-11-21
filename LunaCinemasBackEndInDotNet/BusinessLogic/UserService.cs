@@ -79,7 +79,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
             }
             else
             {
-                _adminContext.Save((Admin)user);
+                _adminContext.Create((Admin)user);
             }
         }
 

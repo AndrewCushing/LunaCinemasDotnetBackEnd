@@ -41,5 +41,10 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             _accessTokenContext.DeleteTokenByGuid(token);
         }
+
+        public string GetUserIdFromToken(string token)
+        {
+            return _accessTokenContext.FindByGuid(token)?.UserId;
+        }
     }
 }

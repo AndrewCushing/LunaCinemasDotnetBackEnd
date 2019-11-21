@@ -23,7 +23,7 @@ namespace LunaCinemasTest
             throw new System.NotImplementedException();
         }
 
-        public bool DeleteUser(string userId)
+        public bool DeleteCustomer(string userId)
         {
             throw new System.NotImplementedException();
         }

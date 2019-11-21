@@ -8,7 +8,7 @@ namespace LunaCinemasTest.MockPersistence
     {
         private readonly List<User> admins = new List<User>();
 
-        public void Save(Admin user)
+        public void Create(Admin user)
         {
             throw new System.NotImplementedException();
         }
@@ -23,7 +23,7 @@ namespace LunaCinemasTest.MockPersistence
             throw new System.NotImplementedException();
         }
 
-        public bool DeleteUser(string userId)
+        public bool DeleteAdmin(string userId)
         {
             throw new System.NotImplementedException();
         }

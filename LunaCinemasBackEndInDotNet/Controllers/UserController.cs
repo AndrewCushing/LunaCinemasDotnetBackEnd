@@ -54,16 +54,16 @@ namespace LunaCinemasBackEndInDotNet.Controllers
 
         [Route("delete")]
         [HttpPost]
-        public ActionResult<ResponseObject<object>> DeleteUser([FromBody] string[] usernameAndPassword)
+        public ActionResult<ResponseObject<string>> DeleteUser([FromBody] string[] tokenAndPassword)
         {
-            return null;
+            return _existingUserService.DeleteUser(tokenAndPassword);
         }
 
         [Route("changepassword")]
         [HttpPost]
         public ActionResult<ResponseObject<string>> ChangePassword([FromBody] string[] tokenOldNewPasswords)
         {
-            return null;
+            return _existingUserService.ChangePassword(tokenOldNewPasswords);
         }
     }
 }

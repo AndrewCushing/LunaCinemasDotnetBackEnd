@@ -6,12 +6,13 @@ namespace LunaCinemasBackEndInDotNet.Persistence
 {
     public interface IAdminContext
     {
-        void Save(Admin user);
+        void Create(Admin user);
         List<Admin> FindByEmail(string email);
         Admin FindById(string userId);
-        bool DeleteUser(string userId);
+        bool DeleteAdmin(string userId);
         void DeleteAll();
         string FindByEmailAndPassword(string email, string password);
+        void ChangePassword(string userId, string newPassword);
     }
     public class AdminContext : IAdminContext
     {
@@ -22,7 +23,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
                 .GetDatabase(settings.DatabaseName)
                 .GetCollection<Admin>(settings.AdminCollectionName);
         }
-        public void Save(Admin admin)
+        public void Create(Admin admin)
         {
             _adminCollection.InsertOne(admin);
         }
@@ -37,7 +38,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
             return _adminCollection.Find(user => user.Id == userId).ToList()[0];
         }
 
-        public bool DeleteUser(string userId)
+        public bool DeleteAdmin(string userId)
         {
             try
             {
@@ -64,6 +65,13 @@ namespace LunaCinemasBackEndInDotNet.Persistence
                 return result[0].Id;
             }
             return null;
+        }
+
+        public void ChangePassword(string userId, string newPassword)
+        {
+            Admin replacement = _adminCollection.Find(admin => admin.Id == userId).ToList()?[0];
+            replacement.Password = newPassword;
+            _adminCollection.ReplaceOne(admin => admin.Id == userId, replacement);
         }
     }
 }

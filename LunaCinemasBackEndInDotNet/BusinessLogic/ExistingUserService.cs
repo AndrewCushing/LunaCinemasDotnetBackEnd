@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using LunaCinemasBackEndInDotNet.Models;
 using LunaCinemasBackEndInDotNet.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +44,53 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
         {
             _securityService.DeleteToken(token);
             return new ResponseObject<string>(true, "User is now logged out", null);
+        }
+
+        public ActionResult<ResponseObject<string>> DeleteUser(string[] tokenAndPassword)
+        {
+            if (!_securityService.ValidateToken(tokenAndPassword[0]))
+                return new ResponseObject<string>(false, "Access token is not valid", null);
+
+            User user = FetchUserUsingToken(tokenAndPassword[0]);
+            if (user.Password == tokenAndPassword[1])
+            {
+                if (user is Admin)
+                    _adminContext.DeleteAdmin(user.Id);
+                else
+                    _customerContext.DeleteCustomer(user.Id);
+
+                _securityService.DeleteToken(tokenAndPassword[0]);
+                return new ResponseObject<string>(true, "User deleted", null);
+            }
+            return new ResponseObject<string>(false, "Password given does not match existing password", null);
+        }
+
+        public ActionResult<ResponseObject<string>> ChangePassword(string[] tokenOldNewPasswords)
+        {
+            if (!_securityService.ValidateToken(tokenOldNewPasswords[0]))
+                return new ResponseObject<string>(false, "Access token is not valid", null);
+            
+            User user = FetchUserUsingToken(tokenOldNewPasswords[0]);
+            if (tokenOldNewPasswords[1] != user.Password)
+                return new ResponseObject<string>(false, "Password given does not match current password", null);
+
+            if (user is Admin)
+            {
+                _adminContext.ChangePassword(user.Id,tokenOldNewPasswords[2]);
+            }
+            else
+            {
+                _customerContext.ChangePassword(user.Id, tokenOldNewPasswords[2]);
+            }
+            return new ResponseObject<string>(true, "Password changed successfully", null);
+        }
+
+        private User FetchUserUsingToken(string token)
+        {
+            string userId = _securityService.GetUserIdFromToken(token);
+            Admin possibleAdmin = _adminContext.FindById(userId);
+            User user = possibleAdmin ?? (User)_customerContext.FindById(userId);
+            return user;
         }
     }
 }

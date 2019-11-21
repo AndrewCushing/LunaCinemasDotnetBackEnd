@@ -9,9 +9,10 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void Save (Customer customer);
         List<Customer> FindByEmail (string email);
         Customer FindById(string userId);
-        bool DeleteUser(string userId);
+        bool DeleteCustomer(string userId);
         void DeleteAll();
         string FindByEmailAndPassword(string email, string password);
+        void ChangePassword(string userId, string newPassword);
     }
     public class CustomerContext : ICustomerContext
     {
@@ -39,7 +40,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
             return _customerCollection.Find(user => user.Id == userId).ToList()[0];
         }
 
-        public bool DeleteUser(string userId)
+        public bool DeleteCustomer(string userId)
         {
             try
             {
@@ -66,6 +67,15 @@ namespace LunaCinemasBackEndInDotNet.Persistence
                 return result[0].Id;
             }
             return null;
+        }
+
+        public void ChangePassword(string userId, string newPassword)
+        {
+            {
+                Customer replacement = _customerCollection.Find(customer => customer.Id == userId).ToList()?[0];
+                replacement.Password = newPassword;
+                _customerCollection.ReplaceOne(customer => customer.Id == userId, replacement);
+            }
         }
     }
 }
