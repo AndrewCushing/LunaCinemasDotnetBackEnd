@@ -131,6 +131,91 @@ AccessToken will be returned in the response but there is no need to use this as
 
 Whether the access token has expired or never existed, the response will be the same.
 
+## Logout:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/user/logout/{AccessToken}
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "User is now logged out",
+    "contentList": null
+}
+```
+
+## Delete user account:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/user/delete
+
+**Body:**
+```
+["{AccessToken}","{Password for confirmation}"]
+```
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "User deleted",
+    "contentList": null
+}
+```
+
+**:poop: Example negative response:**
+```
+{
+    "successful": false,
+    "body": "Password given does not match existing password",
+    "contentList": null
+}
+```
+
+#### :astonished:**Note:**
+If the user is successfully deleted then the access token will also be destroyed. If the password given is incorrect then they will remain logged in.
+
+## Change password:
+
+**Method:**
+POST
+
+**URL:**
+https://localhost:8080/user/changepassword
+
+**Body:**
+```
+["{AccessToken}","{Current Password}","{New Password}"]
+```
+
+**:+1: Example positive response:**
+```
+{
+    "successful": true,
+    "body": "Password changed successfully",
+    "contentList": null
+}
+```
+
+**:poop: Example negative response:**
+```
+{
+    "successful": false,
+    "body": "Password given does not match current password",
+    "contentList": null
+}
+```
+
+#### :astonished:**Note:**
+If the access token provided is valid then it will be refreshed, no need for a new one to be provided.
+
 # Films
 
 ## Get new films:
