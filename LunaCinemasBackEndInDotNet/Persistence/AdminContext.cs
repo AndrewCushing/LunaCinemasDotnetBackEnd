@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using MongoDB.Driver;
 
@@ -14,6 +15,8 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         string FindByEmailAndPassword(string email, string password);
         void ChangePassword(string userId, string newPassword);
     }
+    
+    [ExcludeFromCodeCoverage]
     public class AdminContext : IAdminContext
     {
         private readonly IMongoCollection<Admin> _adminCollection;

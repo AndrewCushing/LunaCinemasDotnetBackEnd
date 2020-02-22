@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using MongoDB.Driver;
 
@@ -16,6 +17,8 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void UpdateFilm(Film film);
         void DeleteFilm(string filmId);
     }
+    
+    [ExcludeFromCodeCoverage]
     public class FilmContext : IFilmContext
     {
         private readonly IMongoCollection<Film> _filmCollection;

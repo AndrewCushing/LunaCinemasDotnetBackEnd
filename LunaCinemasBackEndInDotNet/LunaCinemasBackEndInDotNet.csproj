@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
@@ -13,19 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EasyMongo" Version="0.1.2" />
-    <PackageReference Include="JSON" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
-    <PackageReference Include="MongoDB.Driver" Version="2.3.0" />
-    <PackageReference Include="MongoDb.Repository" Version="2015.8.15" />
-    <PackageReference Include="more.xunit.runner.visualstudio" Version="2.3.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+
+    <PackageReference Include="MongoDB.Driver" Version="2.10.2" />
+
     <PackageReference Include="xunit" Version="2.4.0" />
   </ItemGroup>
 

@@ -105,5 +105,15 @@ namespace LunaCinemasTest.MockPersistence
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateFilm(Film film)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteFilm(string filmId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -37,5 +37,10 @@ namespace LunaCinemasTest
         {
             throw new System.NotImplementedException();
         }
+
+        public void ChangePassword(string userId, string newPassword)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

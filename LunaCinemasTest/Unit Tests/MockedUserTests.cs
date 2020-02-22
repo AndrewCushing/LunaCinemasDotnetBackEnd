@@ -124,7 +124,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         public void OnceUserLogsOutTokenCannotBeUsed()
         {
             string accessToken = _userController.AddCustomer(new List<string> { "bob", "twit", "thisemail", "pass"}).Value.contentList[0];
-            ActionResult<ResponseObject<object>> actualResponse = _userController.Logout(accessToken);
+            ActionResult<ResponseObject<string>> actualResponse = _userController.Logout(accessToken);
             Assert.IsTrue(actualResponse.Value.successful);
             ActionResult<ResponseObject<string>> attemptToReuseToken = _userController.VerifyAccessToken(accessToken);
             Assert.IsFalse(attemptToReuseToken.Value.successful);
@@ -135,10 +135,10 @@ namespace LunaCinemasTest.MockedPersistence_tests
         {
             CreateTestCustomer("Jeff", "nobody", "Jeff.nobody@google.com", "nobodyspassword");
             string accessToken1 = _userController.AttemptLogin(new List<string> { "bob", "pass"}).Value.contentList[0];
-            ActionResult<ResponseObject<object>> firstLoginResponse = _userController.Logout(accessToken1);
+            ActionResult<ResponseObject<string>> firstLoginResponse = _userController.Logout(accessToken1);
             Assert.IsTrue(firstLoginResponse.Value.successful);
             string accessToken2 = _userController.AttemptLogin(new List<string> { "bob", "pass" }).Value.contentList[0];
-            ActionResult<ResponseObject<object>> secondLoginResponse = _userController.Logout(accessToken2);
+            ActionResult<ResponseObject<string>> secondLoginResponse = _userController.Logout(accessToken2);
             Assert.IsTrue(secondLoginResponse.Value.successful);
             ActionResult<ResponseObject<string>> attemptToReuseToken1 = _userController.VerifyAccessToken(accessToken1);
             Assert.IsFalse(attemptToReuseToken1.Value.successful);
@@ -150,7 +150,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
         public void UserCanBeDeleted()
         {
             CreateTestCustomer("Jeff", "nobody", "Jeff.nobody@google.com", "nobodyspassword");
-            ActionResult<ResponseObject<object>> actualResponse =
+            ActionResult<ResponseObject<string>> actualResponse =
                 _userController.DeleteUser(new[] {"sally", "guessmyname"});
             Assert.IsTrue(actualResponse.Value.successful);
             Assert.IsTrue(_mockCustomerContext.FindByEmail("sally").Count < 1);
@@ -163,7 +163,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
             ActionResult<ResponseObject<string>> login1Response =
                 _userController.AttemptLogin(new List<string> { "nobody", "nobodyspassword"});
             Assert.IsTrue(login1Response.Value.successful);
-            ActionResult<ResponseObject<object>> deletionResponse =
+            ActionResult<ResponseObject<string>> deletionResponse =
                 _userController.DeleteUser(new[] {"nobody", "nobodyspassword"});
             Assert.IsTrue(deletionResponse.Value.successful);
             ActionResult<ResponseObject<string>> verifyAccessTokenFromLogin1 =
@@ -178,7 +178,7 @@ namespace LunaCinemasTest.MockedPersistence_tests
             ActionResult<ResponseObject<string>> login1Response =
                 _userController.AttemptLogin(new List<string> { "nobody", "nobodyspassword" });
             Assert.IsTrue(login1Response.Value.successful);
-            ActionResult<ResponseObject<object>> deletionResponse =
+            ActionResult<ResponseObject<string>> deletionResponse =
                 _userController.DeleteUser(new [] { "nobody", "nobodyspassword" });
             Assert.IsTrue(deletionResponse.Value.successful);
             ActionResult<ResponseObject<string>> login2Response =

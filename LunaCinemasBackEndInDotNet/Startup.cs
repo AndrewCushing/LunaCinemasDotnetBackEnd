@@ -1,4 +1,5 @@
-﻿using LunaCinemasBackEndInDotNet.BusinessLogic;
+﻿using System.Diagnostics.CodeAnalysis;
+using LunaCinemasBackEndInDotNet.BusinessLogic;
 using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using LunaCinemasBackEndInDotNet.Persistence;
 
 namespace LunaCinemasBackEndInDotNet
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -22,7 +24,7 @@ namespace LunaCinemasBackEndInDotNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.Configure<LunaCinemasDatabaseSettings>(
                 Configuration.GetSection(nameof(LunaCinemasDatabaseSettings)));
@@ -58,7 +60,7 @@ namespace LunaCinemasBackEndInDotNet
                     });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,8 +76,6 @@ namespace LunaCinemasBackEndInDotNet
             }
             app.UseCors(MyAllowSpecificOrigins); 
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using MongoDB.Driver;
 
@@ -12,6 +13,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void DeleteAll();
     }
     
+    [ExcludeFromCodeCoverage]
     public class CommentContext : ICommentContext
     {
         private readonly IMongoCollection<Comment> _commentCollection;

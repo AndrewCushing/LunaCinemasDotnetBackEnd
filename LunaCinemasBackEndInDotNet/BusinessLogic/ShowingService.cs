@@ -8,18 +8,18 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 {
     public class ShowingService
     {
-        private readonly IShowingContext _dbContext;
+        private readonly IShowingContext _showingContext;
         private readonly IFilmContext _filmContext;
 
-        public ShowingService(IShowingContext dbContext, IFilmContext filmContext)
+        public ShowingService(IShowingContext showingContext, IFilmContext filmContext)
         {
-            _dbContext = dbContext;
+            _showingContext = showingContext;
             _filmContext = filmContext;
         }
         
         public ActionResult<ResponseObject<object>> GetShowingsByFilmId(string filmId)
         {
-            List<Showing> showingsForThisFilm = _dbContext.GetByFilmId(filmId);
+            List<Showing> showingsForThisFilm = _showingContext.GetByFilmId(filmId);
             List<Film> filmAsList = _filmContext.FindById(filmId);
             if (showingsForThisFilm.Count > 0)
             {
@@ -33,7 +33,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         public ActionResult<ResponseObject<Showing>> AttemptBooking(string showingId, string[] seatsToBook)
         {
-            Showing showing = _dbContext.GetById(showingId);
+            Showing showing = _showingContext.GetById(showingId);
             foreach (string seat in seatsToBook)
             {
                 int[] coords = getSeatCoordsAsInts(seat);
@@ -45,7 +45,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
                 }
             }
             Showing newShowing = createShowingWithSeatsToBook(showing, seatsToBook);
-            bool success = _dbContext.UpdateShowing(showing, newShowing);
+            bool success = _showingContext.UpdateShowing(showing, newShowing);
             return success
                 ? new ResponseObject<Showing>(true, "Your seats have been booked", null)
                 : new ResponseObject<Showing>(false, "Unable to book seats due to a problem with the database connection. Please try again later", null);
@@ -88,7 +88,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         internal void AddShowing(string filmId, string screenType, string time, string date)
         {
-            _dbContext.AddShowing(new Showing()
+            _showingContext.AddShowing(new Showing()
             {
                 FilmId = filmId,
                 Date = date,
@@ -135,7 +135,7 @@ namespace LunaCinemasBackEndInDotNet.BusinessLogic
 
         internal void DeleteAll()
         {
-            _dbContext.DeleteAll();
+            _showingContext.DeleteAll();
         }
     }
 }

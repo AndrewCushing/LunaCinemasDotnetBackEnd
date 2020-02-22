@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
-using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators;
 using MongoDB.Driver;
 
 namespace LunaCinemasBackEndInDotNet.Persistence
@@ -17,6 +13,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void deleteAll();
     }
     
+    [ExcludeFromCodeCoverage]
     public class ReviewContext : IReviewContext
     {
         private readonly ILunaCinemasDatabaseSettings _settings;

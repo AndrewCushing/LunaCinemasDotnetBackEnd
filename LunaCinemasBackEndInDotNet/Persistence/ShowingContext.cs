@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -15,6 +16,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void AddShowing(Showing showing);
     }
     
+    [ExcludeFromCodeCoverage]
     public class ShowingContext : IShowingContext
     {
         private readonly ILunaCinemasDatabaseSettings _settings;

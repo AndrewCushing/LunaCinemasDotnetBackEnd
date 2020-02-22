@@ -28,8 +28,8 @@ namespace LunaCinemasTest
         public void ReviewsCanBeSubmitted()
         {
             _filmContext.AddFindByIdResult(new Film(){Id = "5d650036280b7e2dc0b0d121"});
-            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview("5d650036280b7e2dc0b0d121", "Test user", "3",
-                "This is a test review. Nothing to see here.");
+            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview(new Review("5d650036280b7e2dc0b0d121", "Test user", "3",
+                "This is a test review. Nothing to see here."));
             Assert.AreEqual(true, actualResponse.Value.successful);
             Assert.AreEqual(1, _reviewContext.FindByFilmId("5d650036280b7e2dc0b0d121").Count);
             Assert.AreEqual("Test user", _reviewContext.FindByFilmId("5d650036280b7e2dc0b0d121")[0].Username);
@@ -54,8 +54,8 @@ namespace LunaCinemasTest
         public void ProhibitedWordsInReviewsAreCensoredWhenReviewIsRetrieved()
         {
             _filmContext.AddFindByIdResult(new Film(){Id = "5d650036280b7e2dc0b0d121"});
-            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview("5d650036280b7e2dc0b0d121", "Test user", "3",
-                "This is a test review. natwesT");
+            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview(new Review("5d650036280b7e2dc0b0d121", "Test user", "3",
+                "This is a test review. natwesT"));
             Assert.AreEqual(true, actualResponse.Value.successful);
             List<Review> reviews = _reviewContext.FindByFilmId("5d650036280b7e2dc0b0d121");
             Review testReview = reviews[0];
@@ -65,7 +65,7 @@ namespace LunaCinemasTest
         [TestMethod]
         public void CannotAddAReviewToAFilmThatDoesntExist()
         {
-            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview("254345", "Jeff", "4", "Not too bad");
+            ActionResult<ResponseObject<object>> actualResponse = _reviewsController.SubmitReview(new Review("254345", "Jeff", "4", "Not too bad"));
             Assert.IsFalse(actualResponse.Value.successful);
         }
     }

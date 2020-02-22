@@ -12,14 +12,16 @@ namespace LunaCinemasTest
     {
         private MockShowingContext _mockShowingContext;
         private MockFilmContext _mockFilmContext;
+        private MockBookingContext _mockBookingContext;
         private BookingController _bookingController;
-            
+        
         [TestInitialize]
         public void CreateMocks()
         {
             _mockFilmContext = new MockFilmContext();
             _mockShowingContext = new MockShowingContext();
-            _bookingController = new BookingController(new BookingService(new ShowingService(_mockShowingContext,_mockFilmContext)));
+            _mockBookingContext = new MockBookingContext();
+            _bookingController = new BookingController(new BookingService(new ShowingService(_mockShowingContext,_mockFilmContext), _mockBookingContext));
         }
 
         [TestMethod]

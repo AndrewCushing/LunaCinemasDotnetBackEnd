@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using MongoDB.Driver;
 
@@ -13,6 +14,7 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         void DeleteAll();
     }
 
+    [ExcludeFromCodeCoverage]
     public class AccessTokenContext : IAccessTokenContext
     {
         private readonly IMongoCollection<AccessToken> _accessTokenCollection;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using LunaCinemasBackEndInDotNet.Models;
 using MongoDB.Driver;
 
@@ -9,7 +10,8 @@ namespace LunaCinemasBackEndInDotNet.Persistence
         bool AddBooking(Booking booking);
         bool CancelBooking(Booking booking);
     }
-
+    
+    [ExcludeFromCodeCoverage]
     public class BookingContext : IBookingContext
     {
         private IMongoCollection<Booking> _bookingCollection;
