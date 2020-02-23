@@ -49,7 +49,8 @@ namespace LunaCinemasBackEndInDotNet
             services.AddSingleton<InitialisationHandler>();
             services.AddSingleton<AccountCreationService>();
             services.AddSingleton<ExistingUserService>();
-
+            MvcOptions mvcOptions = new MvcOptions(){EnableEndpointRouting = false};
+            services.AddMvc((options) => options.EnableEndpointRouting = false);
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
@@ -75,7 +76,8 @@ namespace LunaCinemasBackEndInDotNet
                 app.UseHsts();
             }
             app.UseCors(MyAllowSpecificOrigins); 
-
+            app.UseHttpsRedirection();
+            app.UseMvc();
         }
     }
 }
