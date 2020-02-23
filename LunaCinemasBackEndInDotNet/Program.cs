@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using LunaCinemasBackEndInDotNet.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -14,6 +15,10 @@ namespace LunaCinemasBackEndInDotNet
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>().ConfigureServices((context, services) =>
+                {
+                    context.Configuration.GetSection(nameof(LunaCinemasDatabaseSettings))["ConnectionString"] =
+                        args[0];
+                });
     }
 }

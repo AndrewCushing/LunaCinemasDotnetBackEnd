@@ -29,6 +29,8 @@ namespace LunaCinemasBackEndInDotNet
             services.Configure<LunaCinemasDatabaseSettings>(
                 Configuration.GetSection(nameof(LunaCinemasDatabaseSettings)));
 
+            Configuration.GetSection(nameof(LunaCinemasDatabaseSettings))["ConnectionString"] = "mongodb+srv://EmpireBackEnd:K7d30o2bD5b26h4f@empiredb-t9rkx.mongodb.net/test?retryWrites=true&w=majority";
+
             services.AddSingleton<ILunaCinemasDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<LunaCinemasDatabaseSettings>>().Value);
 
